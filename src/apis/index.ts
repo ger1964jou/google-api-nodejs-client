@@ -177,6 +177,10 @@ import {VERSIONS as cloudbillingVersions, cloudbilling} from './cloudbilling';
 import {VERSIONS as cloudbuildVersions, cloudbuild} from './cloudbuild';
 import {VERSIONS as cloudchannelVersions, cloudchannel} from './cloudchannel';
 import {
+  VERSIONS as cloudcontrolspartnerVersions,
+  cloudcontrolspartner,
+} from './cloudcontrolspartner';
+import {
   VERSIONS as clouddebuggerVersions,
   clouddebugger,
 } from './clouddebugger';
@@ -603,6 +607,7 @@ import {
   VERSIONS as smartdevicemanagementVersions,
   smartdevicemanagement,
 } from './smartdevicemanagement';
+import {VERSIONS as solarVersions, solar} from './solar';
 import {VERSIONS as sourcerepoVersions, sourcerepo} from './sourcerepo';
 import {VERSIONS as spannerVersions, spanner} from './spanner';
 import {VERSIONS as speechVersions, speech} from './speech';
@@ -758,6 +763,7 @@ export const APIS: APIList = {
   cloudbilling: cloudbillingVersions,
   cloudbuild: cloudbuildVersions,
   cloudchannel: cloudchannelVersions,
+  cloudcontrolspartner: cloudcontrolspartnerVersions,
   clouddebugger: clouddebuggerVersions,
   clouddeploy: clouddeployVersions,
   clouderrorreporting: clouderrorreportingVersions,
@@ -939,6 +945,7 @@ export const APIS: APIList = {
   siteVerification: siteVerificationVersions,
   slides: slidesVersions,
   smartdevicemanagement: smartdevicemanagementVersions,
+  solar: solarVersions,
   sourcerepo: sourcerepoVersions,
   spanner: spannerVersions,
   speech: speechVersions,
@@ -1048,6 +1055,7 @@ export class GeneratedAPIs {
   cloudbilling = cloudbilling;
   cloudbuild = cloudbuild;
   cloudchannel = cloudchannel;
+  cloudcontrolspartner = cloudcontrolspartner;
   clouddebugger = clouddebugger;
   clouddeploy = clouddeploy;
   clouderrorreporting = clouderrorreporting;
@@ -1229,6 +1237,7 @@ export class GeneratedAPIs {
   siteVerification = siteVerification;
   slides = slides;
   smartdevicemanagement = smartdevicemanagement;
+  solar = solar;
   sourcerepo = sourcerepo;
   spanner = spanner;
   speech = speech;

@@ -412,7 +412,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "Resource name of the SFDC instance projects/{project}/locations/{location}/authConfigs/{authConfig}.",
+                      "description": "Resource name of the auth config. For more information, see Manage authentication profiles. projects/{project}/locations/{location}/authConfigs/{authConfig}.",
                       "location": "path",
                       "pattern": "^projects/[^/]+/locations/[^/]+/authConfigs/[^/]+$",
                       "required": true,
@@ -1566,7 +1566,7 @@
                           "type": "string"
                         },
                         "name": {
-                          "description": "Resource name of the SFDC instance projects/{project}/locations/{location}/authConfigs/{authConfig}.",
+                          "description": "Resource name of the auth config. For more information, see Manage authentication profiles. projects/{project}/locations/{location}/authConfigs/{authConfig}.",
                           "location": "path",
                           "pattern": "^projects/[^/]+/locations/[^/]+/products/[^/]+/authConfigs/[^/]+$",
                           "required": true,
@@ -3299,7 +3299,7 @@
       }
     }
   },
-  "revision": "20240305",
+  "revision": "20240402",
   "rootUrl": "https://integrations.googleapis.com/",
   "schemas": {
     "CrmlogErrorCode": {
@@ -7778,6 +7778,9 @@
         "protoDefPath": {
           "description": "If the data type is of type proto or proto array, this field needs to be populated with the fully qualified proto name. This message, for example, would be \"enterprise.crm.frontends.eventbus.proto.WorkflowParameterEntry\".",
           "type": "string"
+        },
+        "required": {
+          "type": "boolean"
         }
       },
       "type": "object"
@@ -8969,7 +8972,7 @@
           "type": "string"
         },
         "name": {
-          "description": "Resource name of the SFDC instance projects/{project}/locations/{location}/authConfigs/{authConfig}.",
+          "description": "Resource name of the auth config. For more information, see Manage authentication profiles. projects/{project}/locations/{location}/authConfigs/{authConfig}.",
           "type": "string"
         },
         "overrideValidTime": {
@@ -9850,8 +9853,17 @@
           "description": "Required. If any integration version is published.",
           "type": "boolean"
         },
+        "creatorEmail": {
+          "description": "Output only. The creator's email address. Generated based on the End User Credentials/LOAS role of the user making the call.",
+          "readOnly": true,
+          "type": "string"
+        },
         "description": {
           "description": "Optional.",
+          "type": "string"
+        },
+        "lastModifierEmail": {
+          "description": "Required. The last modifier of this integration",
           "type": "string"
         },
         "name": {
