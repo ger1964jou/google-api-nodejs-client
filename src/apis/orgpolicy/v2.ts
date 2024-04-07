@@ -154,6 +154,10 @@ export namespace orgpolicy_v2 {
      */
     constraintDefault?: string | null;
     /**
+     * Defines this constraint as being a CustomConstraint.
+     */
+    customConstraint?: Schema$GoogleCloudOrgpolicyV2ConstraintGoogleDefinedCustomConstraint;
+    /**
      * Detailed description of what this constraint controls as well as how and where it is enforced. Mutable.
      */
     description?: string | null;
@@ -178,6 +182,27 @@ export namespace orgpolicy_v2 {
    * A constraint that is either enforced or not. For example, a constraint `constraints/compute.disableSerialPortAccess`. If it is enforced on a VM instance, serial port connections will not be opened to that instance.
    */
   export interface Schema$GoogleCloudOrgpolicyV2ConstraintBooleanConstraint {}
+  /**
+   * A Google defined custom constraint. This represents a subset of fields missing from Constraint proto that are required to describe CustomConstraint
+   */
+  export interface Schema$GoogleCloudOrgpolicyV2ConstraintGoogleDefinedCustomConstraint {
+    /**
+     * Allow or deny type.
+     */
+    actionType?: string | null;
+    /**
+     * Org policy condition/expression. For example: `resource.instanceName.matches("[production|test]_.*_(\d)+")` or, `resource.management.auto_upgrade == true` The max length of the condition is 1000 characters.
+     */
+    condition?: string | null;
+    /**
+     * All the operations being applied for this constraint.
+     */
+    methodTypes?: string[] | null;
+    /**
+     * The resource instance type on which this policy applies. Format will be of the form : `/` Example: * `compute.googleapis.com/Instance`.
+     */
+    resourceTypes?: string[] | null;
+  }
   /**
    * A constraint that allows or disallows a list of string values, which are configured by an Organization Policy administrator with a policy.
    */
