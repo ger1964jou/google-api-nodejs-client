@@ -1548,6 +1548,10 @@ export namespace datamigration_v1 {
      */
     dumpPath?: string | null;
     /**
+     * Optional. The type of the data dump. Supported for MySQL to CloudSQL for MySQL migrations only.
+     */
+    dumpType?: string | null;
+    /**
      * Output only. The duration of the migration job (in seconds). A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
      */
     duration?: string | null;
@@ -2003,7 +2007,12 @@ export namespace datamigration_v1 {
   /**
    * Request message for 'ResumeMigrationJob' request.
    */
-  export interface Schema$ResumeMigrationJobRequest {}
+  export interface Schema$ResumeMigrationJobRequest {
+    /**
+     * Optional. Resume the migration job without running prior configuration verification. Defaults to `false`.
+     */
+    skipValidation?: boolean | null;
+  }
   /**
    * The details needed to configure a reverse SSH tunnel between the source and destination databases. These details will be used when calling the generateSshScript method (see https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs/generateSshScript) to produce the script that will help set up the reverse SSH tunnel, and to set up the VPC peering between the Cloud SQL private network and the VPC.
    */
