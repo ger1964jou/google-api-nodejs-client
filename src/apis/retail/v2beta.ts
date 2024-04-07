@@ -3183,6 +3183,10 @@ export namespace retail_v2beta {
      */
     ignoreControlIds?: string[] | null;
     /**
+     * When the flag is enabled, the products in the denylist will not be filtered out in the recommendation filtering results.
+     */
+    ignoreRecsDenylist?: boolean | null;
+    /**
      * The id of the model in the same Catalog to use at serving time. Currently only RecommendationModels are supported: https://cloud.google.com/retail/recommendations-ai/docs/create-models Can be changed but only to a compatible model (e.g. others-you-may-like CTR to others-you-may-like CVR). Required when solution_types is SOLUTION_TYPE_RECOMMENDATION.
      */
     modelId?: string | null;
