@@ -127,6 +127,15 @@ export namespace chat_v1 {
   }
 
   /**
+   * One or more interactive widgets that appear at the bottom of a message. For details, see [Add interactive widgets at the bottom of a message](https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets).
+   */
+  export interface Schema$AccessoryWidget {
+    /**
+     * A list of buttons.
+     */
+    buttonList?: Schema$GoogleAppsCardV1ButtonList;
+  }
+  /**
    * List of string parameters to supply when the action method is invoked. For example, consider three snooze buttons: snooze now, snooze one day, snooze next week. You might use `action method = snooze()`, passing the snooze type and snooze time in the list of string parameters.
    */
   export interface Schema$ActionParameter {
@@ -970,7 +979,7 @@ export namespace chat_v1 {
      */
     knownIcon?: string | null;
     /**
-     * Display one of the [Google Material Icons](https://fonts.google.com/icons). For example, to display a [checkbox icon](https://fonts.google.com/icons?selected=Material%20Symbols%20Outlined%3Acheck_box%3AFILL%400%3Bwght%40400%3BGRAD%400%3Bopsz%4048), use "material_icon": { "name": "check_box" \} Available for Chat apps and in [Developer Preview](https://developers.google.com/workspace/preview) for Google Workspace Add-ons.
+     * Display one of the [Google Material Icons](https://fonts.google.com/icons). For example, to display a [checkbox icon](https://fonts.google.com/icons?selected=Material%20Symbols%20Outlined%3Acheck_box%3AFILL%400%3Bwght%40400%3BGRAD%400%3Bopsz%4048), use ``` "material_icon": { "name": "check_box" \} ``` [Google Chat apps](https://developers.google.com/workspace/chat):
      */
     materialIcon?: Schema$GoogleAppsCardV1MaterialIcon;
   }
@@ -1026,23 +1035,23 @@ export namespace chat_v1 {
     type?: string | null;
   }
   /**
-   * A [Google Material Icon](https://fonts.google.com/icons), which includes over 2500+ options. For example, to display a [checkbox icon](https://fonts.google.com/icons?selected=Material%20Symbols%20Outlined%3Acheck_box%3AFILL%400%3Bwght%40400%3BGRAD%400%3Bopsz%4048) with customized weight and grade, write { "name": "check_box", "fill": true, "weight": 300, "grade": -25 \} Available for Chat apps and in [Developer Preview](https://developers.google.com/workspace/preview) for Google Workspace Add-ons.
+   * A [Google Material Icon](https://fonts.google.com/icons), which includes over 2500+ options. For example, to display a [checkbox icon](https://fonts.google.com/icons?selected=Material%20Symbols%20Outlined%3Acheck_box%3AFILL%400%3Bwght%40400%3BGRAD%400%3Bopsz%4048) with customized weight and grade, write the following: ``` { "name": "check_box", "fill": true, "weight": 300, "grade": -25 \} ``` [Google Chat apps](https://developers.google.com/workspace/chat):
    */
   export interface Schema$GoogleAppsCardV1MaterialIcon {
     /**
-     * Whether it renders a filled icon. Default value is false. See Customization in [Google Font Icon](https://fonts.google.com/icons) for details.
+     * Whether the icon renders as filled. Default value is false. To preview different icon settings, go to [Google Font Icons](https://fonts.google.com/icons) and adjust the settings under **Customize**.
      */
     fill?: boolean | null;
     /**
-     * Weight and grade affect a symbol’s thickness. Adjustments to grade are more granular than adjustments to weight and have a small impact on the size of the symbol. Choose from {-25, 0, 200\}. If absent, default value is 0. If any other value is specified, a broken image icon is displayed. See Customization in [Google Font Icon](https://fonts.google.com/icons) for details.
+     * Weight and grade affect a symbol’s thickness. Adjustments to grade are more granular than adjustments to weight and have a small impact on the size of the symbol. Choose from {-25, 0, 200\}. If absent, default value is 0. If any other value is specified, the default value is used. To preview different icon settings, go to [Google Font Icons](https://fonts.google.com/icons) and adjust the settings under **Customize**.
      */
     grade?: number | null;
     /**
-     * The icon name defined in the [Google Material Icon Icon](https://fonts.google.com/icons) in snake_case. e.g. "check_box". Any invalid names are abandoned and replaced with empty string and results in the icon failing to render.
+     * The icon name defined in the [Google Material Icon](https://fonts.google.com/icons), for example, `check_box`. Any invalid names are abandoned and replaced with empty string and results in the icon failing to render.
      */
     name?: string | null;
     /**
-     * The stroke weight of the icon. Choose from {100, 200, 300, 400, 500, 600, 700\}. If absent, default value is 400. If any other value is specified, a broken image icon is displayed. See Customization in [Google Font Icon](https://fonts.google.com/icons) for details.
+     * The stroke weight of the icon. Choose from {100, 200, 300, 400, 500, 600, 700\}. If absent, default value is 400. If any other value is specified, the default value is used. To preview different icon settings, go to [Google Font Icons](https://fonts.google.com/icons) and adjust the settings under **Customize**.
      */
     weight?: number | null;
   }
@@ -1139,7 +1148,7 @@ export namespace chat_v1 {
      */
     multiSelectMaxSelectedItems?: number | null;
     /**
-     * For multiselect menus, the number of text characters that a user inputs before the Chat app queries autocomplete and displays suggested items in the menu. If unspecified, defaults to 0 characters for static data sources and 3 characters for external data sources.
+     * For multiselect menus, the number of text characters that a user inputs before the app queries autocomplete and displays suggested items in the menu. If unspecified, defaults to 0 characters for static data sources and 3 characters for external data sources.
      */
     multiSelectMinQueryLength?: number | null;
     /**
@@ -1503,6 +1512,19 @@ export namespace chat_v1 {
      */
     reactions?: Schema$Reaction[];
   }
+  /**
+   * Response message for listing space events.
+   */
+  export interface Schema$ListSpaceEventsResponse {
+    /**
+     * Continuation token used to fetch more events. If this field is omitted, there are no subsequent pages.
+     */
+    nextPageToken?: string | null;
+    /**
+     * Results are returned in chronological order (oldest event first).
+     */
+    spaceEvents?: Schema$SpaceEvent[];
+  }
   export interface Schema$ListSpacesResponse {
     /**
      * You can send a token as `pageToken` to retrieve the next page of results. If empty, there are no subsequent pages.
@@ -1565,9 +1587,67 @@ export namespace chat_v1 {
     state?: string | null;
   }
   /**
+   * Event payload for multiple new memberships. Event type: `google.workspace.chat.membership.v1.batchCreated`
+   */
+  export interface Schema$MembershipBatchCreatedEventData {
+    /**
+     * A list of new memberships.
+     */
+    memberships?: Schema$MembershipCreatedEventData[];
+  }
+  /**
+   * Event payload for multiple deleted memberships. Event type: `google.workspace.chat.membership.v1.batchDeleted`
+   */
+  export interface Schema$MembershipBatchDeletedEventData {
+    /**
+     * A list of deleted memberships.
+     */
+    memberships?: Schema$MembershipDeletedEventData[];
+  }
+  /**
+   * Event payload for multiple updated memberships. Event type: `google.workspace.chat.membership.v1.batchUpdated`
+   */
+  export interface Schema$MembershipBatchUpdatedEventData {
+    /**
+     * A list of updated memberships.
+     */
+    memberships?: Schema$MembershipUpdatedEventData[];
+  }
+  /**
+   * Event payload for a new membership. Event type: `google.workspace.chat.membership.v1.created`.
+   */
+  export interface Schema$MembershipCreatedEventData {
+    /**
+     * The new membership.
+     */
+    membership?: Schema$Membership;
+  }
+  /**
+   * Event payload for a deleted membership. Event type: `google.workspace.chat.membership.v1.deleted`
+   */
+  export interface Schema$MembershipDeletedEventData {
+    /**
+     * The deleted membership. Only the `name` and `state` fields are populated.
+     */
+    membership?: Schema$Membership;
+  }
+  /**
+   * Event payload for an updated membership. Event type: `google.workspace.chat.membership.v1.updated`
+   */
+  export interface Schema$MembershipUpdatedEventData {
+    /**
+     * The updated membership.
+     */
+    membership?: Schema$Membership;
+  }
+  /**
    * A message in a Google Chat space.
    */
   export interface Schema$Message {
+    /**
+     * One or more interactive widgets that appear at the bottom of a message. You can add accessory widgets to messages that contain text, cards, or both text and cards. Not supported for messages that contain dialogs. For details, see [Add interactive widgets at the bottom of a message](https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets). Creating a message with accessory widgets requires [app authentication] (https://developers.google.com/chat/api/guides/auth/service-accounts).
+     */
+    accessoryWidgets?: Schema$AccessoryWidget[];
     /**
      * Input only. Parameters that a Chat app can use to configure how its response is posted.
      */
@@ -1670,6 +1750,60 @@ export namespace chat_v1 {
     threadReply?: boolean | null;
   }
   /**
+   * Event payload for multiple new messages. Event type: `google.workspace.chat.message.v1.batchCreated`
+   */
+  export interface Schema$MessageBatchCreatedEventData {
+    /**
+     * A list of new messages.
+     */
+    messages?: Schema$MessageCreatedEventData[];
+  }
+  /**
+   * Event payload for multiple deleted messages. Event type: `google.workspace.chat.message.v1.batchDeleted`
+   */
+  export interface Schema$MessageBatchDeletedEventData {
+    /**
+     * A list of deleted messages.
+     */
+    messages?: Schema$MessageDeletedEventData[];
+  }
+  /**
+   * Event payload for multiple updated messages. Event type: `google.workspace.chat.message.v1.batchUpdated`
+   */
+  export interface Schema$MessageBatchUpdatedEventData {
+    /**
+     * A list of updated messages.
+     */
+    messages?: Schema$MessageUpdatedEventData[];
+  }
+  /**
+   * Event payload for a new message. Event type: `google.workspace.chat.message.v1.created`
+   */
+  export interface Schema$MessageCreatedEventData {
+    /**
+     * The new message.
+     */
+    message?: Schema$Message;
+  }
+  /**
+   * Event payload for a deleted message. Event type: `google.workspace.chat.message.v1.deleted`
+   */
+  export interface Schema$MessageDeletedEventData {
+    /**
+     * The deleted message. Only the `name`, `createTime`, `deleteTime`, and `deletionMetadata` fields are populated.
+     */
+    message?: Schema$Message;
+  }
+  /**
+   * Event payload for an updated message. Event type: `google.workspace.chat.message.v1.updated`
+   */
+  export interface Schema$MessageUpdatedEventData {
+    /**
+     * The updated message.
+     */
+    message?: Schema$Message;
+  }
+  /**
    * An `onclick` action (for example, open a link).
    */
   export interface Schema$OnClick {
@@ -1720,6 +1854,42 @@ export namespace chat_v1 {
      * Output only. The user who created the reaction.
      */
     user?: Schema$User;
+  }
+  /**
+   * Event payload for multiple new reactions. Event type: `google.workspace.chat.reaction.v1.batchCreated`
+   */
+  export interface Schema$ReactionBatchCreatedEventData {
+    /**
+     * A list of new reactions.
+     */
+    reactions?: Schema$ReactionCreatedEventData[];
+  }
+  /**
+   * Event payload for multiple deleted reactions. Event type: `google.workspace.chat.reaction.v1.batchDeleted`
+   */
+  export interface Schema$ReactionBatchDeletedEventData {
+    /**
+     * A list of deleted reactions.
+     */
+    reactions?: Schema$ReactionDeletedEventData[];
+  }
+  /**
+   * Event payload for a new reaction. Event type: `google.workspace.chat.reaction.v1.created`
+   */
+  export interface Schema$ReactionCreatedEventData {
+    /**
+     * The new reaction.
+     */
+    reaction?: Schema$Reaction;
+  }
+  /**
+   * Event payload for a deleted reaction. Type: `google.workspace.chat.reaction.v1.deleted`
+   */
+  export interface Schema$ReactionDeletedEventData {
+    /**
+     * The deleted reaction.
+     */
+    reaction?: Schema$Reaction;
   }
   /**
    * A rich link to a resource.
@@ -1825,7 +1995,7 @@ export namespace chat_v1 {
      */
     displayName?: string | null;
     /**
-     * Immutable. Whether this space permits any Google Chat user as a member. Input when creating a space in a Google Workspace organization. Omit this field when creating spaces in the following conditions: * The authenticated user uses a Google Account. By default, the space permits any Google Chat user. * The space is used to [import data to Google Chat] (https://developers.google.com/chat/api/guides/import-data-overview). Import mode spaces must only permit members from the same Google Workspace organization. For existing spaces, this field is output only.
+     * Immutable. Whether this space permits any Google Chat user as a member. Input when creating a space in a Google Workspace organization. Omit this field when creating spaces in the following conditions: * The authenticated user uses a consumer account (unmanaged user account). By default, a space created by a consumer account permits any Google Chat user. * The space is used to [import data to Google Chat] (https://developers.google.com/chat/api/guides/import-data-overview). Import mode spaces must only permit members from the same Google Workspace organization. For existing spaces, this field is output only.
      */
     externalUserAllowed?: boolean | null;
     /**
@@ -1866,6 +2036,15 @@ export namespace chat_v1 {
     type?: string | null;
   }
   /**
+   * Event payload for multiple updates to a space. Event type: `google.workspace.chat.space.v1.batchUpdated`
+   */
+  export interface Schema$SpaceBatchUpdatedEventData {
+    /**
+     * A list of updated spaces.
+     */
+    spaces?: Schema$SpaceUpdatedEventData[];
+  }
+  /**
    * A data source that populates Google Chat spaces as selection items for a multiselect menu. Only populates spaces that the user is a member of. [Google Chat apps](https://developers.google.com/workspace/chat):
    */
   export interface Schema$SpaceDataSource {
@@ -1886,6 +2065,104 @@ export namespace chat_v1 {
      * Optional. The space's rules, expectations, and etiquette. Supports up to 5,000 characters.
      */
     guidelines?: string | null;
+  }
+  /**
+   * An event that represents a change or activity in a Google Chat space. To learn more, see [Work with events from Google Chat](https://developers.google.com/workspace/chat/events-overview).
+   */
+  export interface Schema$SpaceEvent {
+    /**
+     * Time when the event occurred.
+     */
+    eventTime?: string | null;
+    /**
+     * Type of space event. Each event type has a batch version, which represents multiple instances of the event type that occur in a short period of time. For `spaceEvents.list()` requests, omit batch event types in your query filter. By default, the server returns both event type and its batch version. Supported event types for [messages](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages): * New message: `google.workspace.chat.message.v1.created` * Updated message: `google.workspace.chat.message.v1.updated` * Deleted message: `google.workspace.chat.message.v1.deleted` * Multiple new messages: `google.workspace.chat.message.v1.batchCreated` * Multiple updated messages: `google.workspace.chat.message.v1.batchUpdated` * Multiple deleted messages: `google.workspace.chat.message.v1.batchDeleted` Supported event types for [memberships](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.members): * New membership: `google.workspace.chat.membership.v1.created` * Updated membership: `google.workspace.chat.membership.v1.updated` * Deleted membership: `google.workspace.chat.membership.v1.deleted` * Multiple new memberships: `google.workspace.chat.membership.v1.batchCreated` * Multiple updated memberships: `google.workspace.chat.membership.v1.batchUpdated` * Multiple deleted memberships: `google.workspace.chat.membership.v1.batchDeleted` Supported event types for [reactions](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages.reactions): * New reaction: `google.workspace.chat.reaction.v1.created` * Deleted reaction: `google.workspace.chat.reaction.v1.deleted` * Multiple new reactions: `google.workspace.chat.reaction.v1.batchCreated` * Multiple deleted reactions: `google.workspace.chat.reaction.v1.batchDeleted` Supported event types about the [space](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces): * Updated space: `google.workspace.chat.space.v1.updated` * Multiple space updates: `google.workspace.chat.space.v1.batchUpdated`
+     */
+    eventType?: string | null;
+    /**
+     * Event payload for multiple new memberships. Event type: `google.workspace.chat.membership.v1.batchCreated`
+     */
+    membershipBatchCreatedEventData?: Schema$MembershipBatchCreatedEventData;
+    /**
+     * Event payload for multiple deleted memberships. Event type: `google.workspace.chat.membership.v1.batchDeleted`
+     */
+    membershipBatchDeletedEventData?: Schema$MembershipBatchDeletedEventData;
+    /**
+     * Event payload for multiple updated memberships. Event type: `google.workspace.chat.membership.v1.batchUpdated`
+     */
+    membershipBatchUpdatedEventData?: Schema$MembershipBatchUpdatedEventData;
+    /**
+     * Event payload for a new membership. Event type: `google.workspace.chat.membership.v1.created`
+     */
+    membershipCreatedEventData?: Schema$MembershipCreatedEventData;
+    /**
+     * Event payload for a deleted membership. Event type: `google.workspace.chat.membership.v1.deleted`
+     */
+    membershipDeletedEventData?: Schema$MembershipDeletedEventData;
+    /**
+     * Event payload for an updated membership. Event type: `google.workspace.chat.membership.v1.updated`
+     */
+    membershipUpdatedEventData?: Schema$MembershipUpdatedEventData;
+    /**
+     * Event payload for multiple new messages. Event type: `google.workspace.chat.message.v1.batchCreated`
+     */
+    messageBatchCreatedEventData?: Schema$MessageBatchCreatedEventData;
+    /**
+     * Event payload for multiple deleted messages. Event type: `google.workspace.chat.message.v1.batchDeleted`
+     */
+    messageBatchDeletedEventData?: Schema$MessageBatchDeletedEventData;
+    /**
+     * Event payload for multiple updated messages. Event type: `google.workspace.chat.message.v1.batchUpdated`
+     */
+    messageBatchUpdatedEventData?: Schema$MessageBatchUpdatedEventData;
+    /**
+     * Event payload for a new message. Event type: `google.workspace.chat.message.v1.created`
+     */
+    messageCreatedEventData?: Schema$MessageCreatedEventData;
+    /**
+     * Event payload for a deleted message. Event type: `google.workspace.chat.message.v1.deleted`
+     */
+    messageDeletedEventData?: Schema$MessageDeletedEventData;
+    /**
+     * Event payload for an updated message. Event type: `google.workspace.chat.message.v1.updated`
+     */
+    messageUpdatedEventData?: Schema$MessageUpdatedEventData;
+    /**
+     * Resource name of the space event. Format: `spaces/{space\}/spaceEvents/{spaceEvent\}`
+     */
+    name?: string | null;
+    /**
+     * Event payload for multiple new reactions. Event type: `google.workspace.chat.reaction.v1.batchCreated`
+     */
+    reactionBatchCreatedEventData?: Schema$ReactionBatchCreatedEventData;
+    /**
+     * Event payload for multiple deleted reactions. Event type: `google.workspace.chat.reaction.v1.batchDeleted`
+     */
+    reactionBatchDeletedEventData?: Schema$ReactionBatchDeletedEventData;
+    /**
+     * Event payload for a new reaction. Event type: `google.workspace.chat.reaction.v1.created`
+     */
+    reactionCreatedEventData?: Schema$ReactionCreatedEventData;
+    /**
+     * Event payload for a deleted reaction. Event type: `google.workspace.chat.reaction.v1.deleted`
+     */
+    reactionDeletedEventData?: Schema$ReactionDeletedEventData;
+    /**
+     * Event payload for multiple updates to a space. Event type: `google.workspace.chat.space.v1.batchUpdated`
+     */
+    spaceBatchUpdatedEventData?: Schema$SpaceBatchUpdatedEventData;
+    /**
+     * Event payload for a space update. Event type: `google.workspace.chat.space.v1.updated`
+     */
+    spaceUpdatedEventData?: Schema$SpaceUpdatedEventData;
+  }
+  /**
+   * Event payload for an updated space. Event type: `google.workspace.chat.space.v1.updated`
+   */
+  export interface Schema$SpaceUpdatedEventData {
+    /**
+     * The updated space.
+     */
+    space?: Schema$Space;
   }
   /**
    * The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
@@ -2283,10 +2560,12 @@ export namespace chat_v1 {
     context: APIRequestContext;
     members: Resource$Spaces$Members;
     messages: Resource$Spaces$Messages;
+    spaceEvents: Resource$Spaces$Spaceevents;
     constructor(context: APIRequestContext) {
       this.context = context;
       this.members = new Resource$Spaces$Members(this.context);
       this.messages = new Resource$Spaces$Messages(this.context);
+      this.spaceEvents = new Resource$Spaces$Spaceevents(this.context);
     }
 
     /**
@@ -4068,7 +4347,7 @@ export namespace chat_v1 {
      */
     name?: string;
     /**
-     * Required. The field paths to update. Separate multiple values with commas or use `*` to update all field paths. Currently supported field paths: - `text` - `attachment` - `cards` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - `cards_v2` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - Developer Preview: `accessory_widgets` (Requires [app authentication](/chat/api/guides/auth/service-accounts).)
+     * Required. The field paths to update. Separate multiple values with commas or use `*` to update all field paths. Currently supported field paths: - `text` - `attachment` - `cards` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - `cards_v2` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - `accessory_widgets` (Requires [app authentication](/chat/api/guides/auth/service-accounts).)
      */
     updateMask?: string;
 
@@ -4088,7 +4367,7 @@ export namespace chat_v1 {
      */
     name?: string;
     /**
-     * Required. The field paths to update. Separate multiple values with commas or use `*` to update all field paths. Currently supported field paths: - `text` - `attachment` - `cards` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - `cards_v2` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - Developer Preview: `accessory_widgets` (Requires [app authentication](/chat/api/guides/auth/service-accounts).)
+     * Required. The field paths to update. Separate multiple values with commas or use `*` to update all field paths. Currently supported field paths: - `text` - `attachment` - `cards` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - `cards_v2` (Requires [app authentication](/chat/api/guides/auth/service-accounts).) - `accessory_widgets` (Requires [app authentication](/chat/api/guides/auth/service-accounts).)
      */
     updateMask?: string;
 
@@ -4502,6 +4781,216 @@ export namespace chat_v1 {
     pageToken?: string;
     /**
      * Required. The message users reacted to. Format: `spaces/{space\}/messages/{message\}`
+     */
+    parent?: string;
+  }
+
+  export class Resource$Spaces$Spaceevents {
+    context: APIRequestContext;
+    constructor(context: APIRequestContext) {
+      this.context = context;
+    }
+
+    /**
+     * Returns an event from a Google Chat space. The [event payload](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload) contains the most recent version of the resource that changed. For example, if you request an event about a new message but the message was later updated, the server returns the updated `Message` resource in the event payload. Requires [user authentication](https://developers.google.com/chat/api/guides/auth/users). To get an event, the authenticated user must be a member of the space. For an example, see [Get details about an event from a Google Chat space](https://developers.google.com/workspace/chat/get-space-event).
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    get(
+      params: Params$Resource$Spaces$Spaceevents$Get,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    get(
+      params?: Params$Resource$Spaces$Spaceevents$Get,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$SpaceEvent>;
+    get(
+      params: Params$Resource$Spaces$Spaceevents$Get,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    get(
+      params: Params$Resource$Spaces$Spaceevents$Get,
+      options: MethodOptions | BodyResponseCallback<Schema$SpaceEvent>,
+      callback: BodyResponseCallback<Schema$SpaceEvent>
+    ): void;
+    get(
+      params: Params$Resource$Spaces$Spaceevents$Get,
+      callback: BodyResponseCallback<Schema$SpaceEvent>
+    ): void;
+    get(callback: BodyResponseCallback<Schema$SpaceEvent>): void;
+    get(
+      paramsOrCallback?:
+        | Params$Resource$Spaces$Spaceevents$Get
+        | BodyResponseCallback<Schema$SpaceEvent>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$SpaceEvent>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$SpaceEvent>
+        | BodyResponseCallback<Readable>
+    ): void | GaxiosPromise<Schema$SpaceEvent> | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Spaces$Spaceevents$Get;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Spaces$Spaceevents$Get;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://chat.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
+            method: 'GET',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['name'],
+        pathParams: ['name'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$SpaceEvent>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$SpaceEvent>(parameters);
+      }
+    }
+
+    /**
+     * Lists events from a Google Chat space. For each event, the [payload](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload) contains the most recent version of the Chat resource. For example, if you list events about new space members, the server returns `Membership` resources that contain the latest membership details. If new members were removed during the requested period, the event payload contains an empty `Membership` resource. Requires [user authentication](https://developers.google.com/chat/api/guides/auth/users). To list events, the authenticated user must be a member of the space. For an example, see [List events from a Google Chat space](https://developers.google.com/workspace/chat/list-space-events).
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    list(
+      params: Params$Resource$Spaces$Spaceevents$List,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    list(
+      params?: Params$Resource$Spaces$Spaceevents$List,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$ListSpaceEventsResponse>;
+    list(
+      params: Params$Resource$Spaces$Spaceevents$List,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    list(
+      params: Params$Resource$Spaces$Spaceevents$List,
+      options:
+        | MethodOptions
+        | BodyResponseCallback<Schema$ListSpaceEventsResponse>,
+      callback: BodyResponseCallback<Schema$ListSpaceEventsResponse>
+    ): void;
+    list(
+      params: Params$Resource$Spaces$Spaceevents$List,
+      callback: BodyResponseCallback<Schema$ListSpaceEventsResponse>
+    ): void;
+    list(callback: BodyResponseCallback<Schema$ListSpaceEventsResponse>): void;
+    list(
+      paramsOrCallback?:
+        | Params$Resource$Spaces$Spaceevents$List
+        | BodyResponseCallback<Schema$ListSpaceEventsResponse>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$ListSpaceEventsResponse>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$ListSpaceEventsResponse>
+        | BodyResponseCallback<Readable>
+    ):
+      | void
+      | GaxiosPromise<Schema$ListSpaceEventsResponse>
+      | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Spaces$Spaceevents$List;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Spaces$Spaceevents$List;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://chat.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/v1/{+parent}/spaceEvents').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'GET',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['parent'],
+        pathParams: ['parent'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$ListSpaceEventsResponse>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$ListSpaceEventsResponse>(parameters);
+      }
+    }
+  }
+
+  export interface Params$Resource$Spaces$Spaceevents$Get
+    extends StandardParameters {
+    /**
+     * Required. The resource name of the space event. Format: `spaces/{space\}/spaceEvents/{spaceEvent\}`
+     */
+    name?: string;
+  }
+  export interface Params$Resource$Spaces$Spaceevents$List
+    extends StandardParameters {
+    /**
+     * Required. A query filter. You must specify at least one event type (`event_type`) using the has `:` operator. To filter by multiple event types, use the `OR` operator. Omit batch event types in your filter. The request automatically returns any related batch events. For example, if you filter by new reactions (`google.workspace.chat.reaction.v1.created`), the server also returns batch new reactions events (`google.workspace.chat.reaction.v1.batchCreated`). For a list of supported event types, see the [`SpaceEvents` reference documentation](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.event_type). Optionally, you can also filter by start time (`start_time`) and end time (`end_time`): * `start_time`: Exclusive timestamp from which to start listing space events. You can list events that occurred up to 28 days ago. If unspecified, lists space events from the past 28 days. * `end_time`: Inclusive timestamp until which space events are listed. If unspecified, lists events up to the time of the request. To specify a start or end time, use the equals `=` operator and format in [RFC-3339](https://www.rfc-editor.org/rfc/rfc3339). To filter by both `start_time` and `end_time`, use the `AND` operator. For example, the following queries are valid: ``` start_time="2023-08-23T19:20:33+00:00" AND end_time="2023-08-23T19:21:54+00:00" ``` ``` start_time="2023-08-23T19:20:33+00:00" AND (event_types:"google.workspace.chat.space.v1.updated" OR event_types:"google.workspace.chat.message.v1.created") ``` The following queries are invalid: ``` start_time="2023-08-23T19:20:33+00:00" OR end_time="2023-08-23T19:21:54+00:00" ``` ``` event_types:"google.workspace.chat.space.v1.updated" AND event_types:"google.workspace.chat.message.v1.created" ``` Invalid queries are rejected by the server with an `INVALID_ARGUMENT` error.
+     */
+    filter?: string;
+    /**
+     * Optional. The maximum number of space events returned. The service might return fewer than this value. Negative values return an `INVALID_ARGUMENT` error.
+     */
+    pageSize?: number;
+    /**
+     * A page token, received from a previous list space events call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to list space events must match the call that provided the page token. Passing different values to the other parameters might lead to unexpected results.
+     */
+    pageToken?: string;
+    /**
+     * Required. Resource name of the [Google Chat space](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces) where the events occurred. Format: `spaces/{space\}`.
      */
     parent?: string;
   }
