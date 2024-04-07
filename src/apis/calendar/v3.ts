@@ -4472,7 +4472,7 @@ export namespace calendar_v3 {
      */
     calendarId?: string;
     /**
-     * Event types to return. Optional. This parameter can be repeated multiple times to return events of different types. The default is ["default", "focusTime", "outOfOffice"].
+     * Event types to return. Optional. This parameter can be repeated multiple times to return events of different types. If unset, returns all event types.
      */
     eventTypes?: string[];
     /**
@@ -4702,7 +4702,7 @@ export namespace calendar_v3 {
      */
     calendarId?: string;
     /**
-     * Event types to return. Optional. This parameter can be repeated multiple times to return events of different types. The default is ["default", "focusTime", "outOfOffice"].
+     * Event types to return. Optional. This parameter can be repeated multiple times to return events of different types. If unset, returns all event types.
      */
     eventTypes?: string[];
     /**
