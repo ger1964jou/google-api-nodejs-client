@@ -219,9 +219,17 @@ export namespace redis_v1 {
      */
     name?: string | null;
     /**
+     * Optional. The type of a redis node in the cluster. NodeType determines the underlying machine-type of a redis node.
+     */
+    nodeType?: string | null;
+    /**
      * Optional. Persistence config (RDB, AOF) for the cluster.
      */
     persistenceConfig?: Schema$ClusterPersistenceConfig;
+    /**
+     * Output only. Precise value of redis memory size in GB for the entire cluster.
+     */
+    preciseSizeGb?: number | null;
     /**
      * Required. Each PscConfig configures the consumer network where IPs will be designated to the cluster for client access through Private Service Connect Automation. Currently, only one PscConfig is supported.
      */
