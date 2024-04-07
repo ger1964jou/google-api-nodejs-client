@@ -444,7 +444,12 @@ export namespace servicecontrol_v2 {
   /**
    * Response message for the Report method.
    */
-  export interface Schema$ReportResponse {}
+  export interface Schema$ReportResponse {
+    /**
+     * The extension field to store serialized OTel responses. e.g. ExportLogsServiceResponse, ExportMetricsServiceResponse.
+     */
+    extensions?: {[key: string]: any} | null;
+  }
   /**
    * This message defines attributes for an HTTP request. If the actual request is not an HTTP request, the runtime system should try to map the actual request to an equivalent HTTP request.
    */
