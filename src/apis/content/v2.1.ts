@@ -1160,6 +1160,10 @@ export namespace content_v2_1 {
      */
     builtinSimpleAction?: Schema$BuiltInSimpleAction;
     /**
+     * Action implemented and performed in (your) third-party application. The application needs to show an additional content and input form to the merchant as specified for given action. They can trigger the action only when they provided all required inputs.
+     */
+    builtinUserInputAction?: Schema$BuiltInUserInputAction;
+    /**
      * Label of the action button.
      */
     buttonLabel?: string | null;
@@ -1175,6 +1179,52 @@ export namespace content_v2_1 {
      * List of reasons why the action is not available. The list of reasons is empty if the action is available. If there is only one reason, it can be displayed next to the disabled button. If there are more reasons, all of them should be displayed, for example in a pop-up dialog.
      */
     reasons?: Schema$ActionReason[];
+  }
+  /**
+   * Flow that can be selected for an action. When merchant selects a flow, application should open a dialog with more information and input form.
+   */
+  export interface Schema$ActionFlow {
+    /**
+     * Label for the button to trigger the action from the action dialog. For example: "Request review"
+     */
+    dialogButtonLabel?: string | null;
+    /**
+     * Important message to be highlighted in the request dialog. For example: "You can only request a review for disagreeing with this issue once. If it's not approved, you'll need to fix the issue and wait a few days before you can request another review."
+     */
+    dialogCallout?: Schema$Callout;
+    /**
+     * Message displayed in the request dialog. For example: "Make sure you've fixed all your country-specific issues. If not, you may have to wait 7 days to request another review". There may be an more information to be shown in a tooltip.
+     */
+    dialogMessage?: Schema$TextWithTooltip;
+    /**
+     * Title of the request dialog. For example: "Before you request a review"
+     */
+    dialogTitle?: string | null;
+    /**
+     * Not for display but need to be sent back for the selected action flow.
+     */
+    id?: string | null;
+    /**
+     * A list of input fields.
+     */
+    inputs?: Schema$InputField[];
+    /**
+     * Text value describing the intent for the action flow. It can be used as an input label if merchant needs to pick one of multiple flows. For example: "I disagree with the issue"
+     */
+    label?: string | null;
+  }
+  /**
+   * Input provided by the merchant.
+   */
+  export interface Schema$ActionInput {
+    /**
+     * Required. Id of the selected action flow.
+     */
+    actionFlowId?: string | null;
+    /**
+     * Required. Values for input fields.
+     */
+    inputValues?: Schema$InputValue[];
   }
   /**
    * A single reason why the action is not available.
@@ -1378,6 +1428,19 @@ export namespace content_v2_1 {
      */
     title?: string | null;
   }
+  /**
+   * Action that is implemented and performed in (your) third-party application. The application needs to show an additional content and input form to the merchant. They can start the action only when they provided all required inputs. The application will request processing of the action by calling the [triggeraction method](https://developers.google.com/shopping-content/reference/rest/v2.1/merchantsupport/triggeraction).
+   */
+  export interface Schema$BuiltInUserInputAction {
+    /**
+     * Internal details. Not for display but need to be sent back when triggering the action.
+     */
+    actionContext?: string | null;
+    /**
+     * Actions may provide multiple different flows. Merchant selects one that fits best to their intent. Selecting the flow is the first step in user's interaction with the action. It affects what input fields will be available and required and also how the request will be processed.
+     */
+    flows?: Schema$ActionFlow[];
+  }
   export interface Schema$BusinessDayConfig {
     /**
      * Regular business days, such as '"monday"'. May not be empty.
@@ -1424,6 +1487,19 @@ export namespace content_v2_1 {
      * Output only. The current participation stage for the program.
      */
     participationStage?: string | null;
+  }
+  /**
+   * An important message that should be highlighted. Usually displayed as a banner.
+   */
+  export interface Schema$Callout {
+    /**
+     * A full message that needs to be shown to the merchant.
+     */
+    fullMessage?: Schema$TextWithTooltip;
+    /**
+     * Can be used to render messages with different severity in different styles. Snippets off all types contain important information that should be displayed to merchants.
+     */
+    styleHint?: string | null;
   }
   /**
    * Request message for the CaptureOrder method.
@@ -2622,6 +2698,134 @@ export namespace content_v2_1 {
      * The holiday type. Always present. Acceptable values are: - "`Christmas`" - "`Easter`" - "`Father's Day`" - "`Halloween`" - "`Independence Day (USA)`" - "`Mother's Day`" - "`Thanksgiving`" - "`Valentine's Day`"
      */
     type?: string | null;
+  }
+  /**
+   * Input field that needs to be available to the merchant. If the field is marked as required, then a value needs to be provided for a successful processing of the request.
+   */
+  export interface Schema$InputField {
+    /**
+     * Input field to provide a boolean value. Corresponds to the [html input type=checkbox](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.checkbox.html#input.checkbox).
+     */
+    checkboxInput?: Schema$InputFieldCheckboxInput;
+    /**
+     * Input field to select one of the offered choices. Corresponds to the [html input type=radio](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.radio.html#input.radio).
+     */
+    choiceInput?: Schema$InputFieldChoiceInput;
+    /**
+     * Not for display but need to be sent back for the given input field.
+     */
+    id?: string | null;
+    /**
+     * Input field label. There may be more information to be shown in a tooltip.
+     */
+    label?: Schema$TextWithTooltip;
+    /**
+     * Whether the field is required. The action button needs to stay disabled till values for all required fields are provided.
+     */
+    required?: boolean | null;
+    /**
+     * Input field to provide text information. Corresponds to the [html input type=text](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.text.html#input.text) or [html textarea](https://www.w3.org/TR/2012/WD-html-markup-20121025/textarea.html#textarea).
+     */
+    textInput?: Schema$InputFieldTextInput;
+  }
+  /**
+   * Checkbox input allows merchants to provide a boolean value. Corresponds to the [html input type=checkbox](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.checkbox.html#input.checkbox). If merchant checks the box, the input value for the field is `true`, otherwise it is `false`. This type of input is often used as a confirmation that the merchant completed required steps before they are allowed to start the action. In such a case, the input field is marked as required and the button to trigger the action should stay disabled until the merchant checks the box.
+   */
+  export interface Schema$InputFieldCheckboxInput {}
+  /**
+   * Choice input allows merchants to select one of the offered choices. Some choices may be linked to additional input fields that should be displayed under or next to the choice option. The value for the additional input field needs to be provided only when the specific choice is selected by the merchant. For example, additional input field can be hidden or disabled until the merchant selects the specific choice.
+   */
+  export interface Schema$InputFieldChoiceInput {
+    /**
+     * A list of choices. Only one option can be selected.
+     */
+    options?: Schema$InputFieldChoiceInputChoiceInputOption[];
+  }
+  /**
+   * A choice that merchant can select.
+   */
+  export interface Schema$InputFieldChoiceInputChoiceInputOption {
+    /**
+     * Input that should be displayed when this option is selected. The additional input will not contain a `ChoiceInput`.
+     */
+    additionalInput?: Schema$InputField;
+    /**
+     * Not for display but need to be sent back for the selected choice option.
+     */
+    id?: string | null;
+    /**
+     * Short description of the choice option. There may be more information to be shown as a tooltip.
+     */
+    label?: Schema$TextWithTooltip;
+  }
+  /**
+   * Text input allows merchants to provide a text value.
+   */
+  export interface Schema$InputFieldTextInput {
+    /**
+     * Additional info regarding the field to be displayed to merchant. For example, warning to not include personal identifiable information. There may be more information to be shown in a tooltip.
+     */
+    additionalInfo?: Schema$TextWithTooltip;
+    /**
+     * Text to be used as the [aria label](https://www.w3.org/TR/WCAG20-TECHS/ARIA14.html) for the input.
+     */
+    ariaLabel?: string | null;
+    /**
+     * Information about the required format. If present, it should be shown close to the input field to help merchants to provide a correct value. For example: "VAT numbers should be in a format similar to SK9999999999"
+     */
+    formatInfo?: string | null;
+    /**
+     * Type of the text input
+     */
+    type?: string | null;
+  }
+  /**
+   * Input provided by the merchant for input field.
+   */
+  export interface Schema$InputValue {
+    /**
+     * Value for checkbox input field.
+     */
+    checkboxInputValue?: Schema$InputValueCheckboxInputValue;
+    /**
+     * Value for choice input field.
+     */
+    choiceInputValue?: Schema$InputValueChoiceInputValue;
+    /**
+     * Required. Id of the corresponding input field.
+     */
+    inputFieldId?: string | null;
+    /**
+     * Value for text input field.
+     */
+    textInputValue?: Schema$InputValueTextInputValue;
+  }
+  /**
+   * Value for checkbox input field.
+   */
+  export interface Schema$InputValueCheckboxInputValue {
+    /**
+     * Required. True if the merchant checked the box field. False otherwise.
+     */
+    value?: boolean | null;
+  }
+  /**
+   * Value for choice input field.
+   */
+  export interface Schema$InputValueChoiceInputValue {
+    /**
+     * Required. Id of the option that was selected by the merchant.
+     */
+    choiceInputOptionId?: string | null;
+  }
+  /**
+   * Value for text input field.
+   */
+  export interface Schema$InputValueTextInputValue {
+    /**
+     * Required. Text provided by the merchant.
+     */
+    value?: string | null;
   }
   /**
    * Request message for the `InsertCheckoutSettings` method.
@@ -5774,6 +5978,10 @@ export namespace content_v2_1 {
      */
     ageGroup?: string | null;
     /**
+     * A safeguard in the [Automated Discounts](https://support.google.com/merchants/answer/10295759?hl=en) and [Dynamic Promotions](https://support.google.com/merchants/answer/13949249?hl=en) projects, ensuring that discounts on merchants' offers do not fall below this value, thereby preserving the offer's value and profitability.
+     */
+    autoPricingMinPrice?: Schema$Price;
+    /**
      * Availability status of the item.
      */
     availability?: string | null;
@@ -6097,6 +6305,14 @@ export namespace content_v2_1 {
      * The source of the offer, that is, how the offer was created. Acceptable values are: - "`api`" - "`crawl`" - "`feed`"
      */
     source?: string | null;
+    /**
+     * Structured description, for algorithmically (AI)-generated descriptions.
+     */
+    structuredDescription?: Schema$ProductStructuredDescription;
+    /**
+     * Structured title, for algorithmically (AI)-generated titles.
+     */
+    structuredTitle?: Schema$ProductStructuredTitle;
     /**
      * Number of periods (months or years) and amount of payment per period for an item with an associated subscription contract.
      */
@@ -6652,6 +6868,32 @@ export namespace content_v2_1 {
      * How this issue affects serving of the offer.
      */
     servability?: string | null;
+  }
+  /**
+   * Structured description, for algorithmically (AI)-generated descriptions. See [description](https://support.google.com/merchants/answer/6324468#When_to_use) for more information.
+   */
+  export interface Schema$ProductStructuredDescription {
+    /**
+     * Required. The description text. Maximum length is 5000 characters.
+     */
+    content?: string | null;
+    /**
+     * Optional. The digital source type. Acceptable values are: - "`trained_algorithmic_media`" - "`default`"
+     */
+    digitalSourceType?: string | null;
+  }
+  /**
+   * Structured title, for algorithmically (AI)-generated titles. See [title](https://support.google.com/merchants/answer/6324415#Whentouse) for more information.
+   */
+  export interface Schema$ProductStructuredTitle {
+    /**
+     * Required. The title text. Maximum length is 150 characters.
+     */
+    content?: string | null;
+    /**
+     * Optional. The digital source type. Acceptable values are: - "`trained_algorithmic_media`" - "`default`"
+     */
+    digitalSourceType?: string | null;
   }
   export interface Schema$ProductSubscriptionCost {
     /**
@@ -7436,6 +7678,10 @@ export namespace content_v2_1 {
      * Optional. How the detailed content should be returned. Default option is to return the content as a pre-rendered HTML text.
      */
     contentOption?: string | null;
+    /**
+     * Optional. How actions with user input form should be handled. If not provided, actions will be returned as links that points merchant to Merchant Center where they can request the action.
+     */
+    userInputActionOption?: string | null;
   }
   /**
    * Response containing support content and actions for listed account issues.
@@ -7458,6 +7704,10 @@ export namespace content_v2_1 {
      * Optional. How the detailed content should be returned. Default option is to return the content as a pre-rendered HTML text.
      */
     contentOption?: string | null;
+    /**
+     * Optional. How actions with user input form should be handled. If not provided, actions will be returned as links that points merchant to Merchant Center where they can request the action.
+     */
+    userInputActionOption?: string | null;
   }
   /**
    * Response containing support content and actions for listed product issues.
@@ -8843,6 +9093,23 @@ export namespace content_v2_1 {
     phoneNumber?: string | null;
   }
   /**
+   * Block of text that may contain a tooltip with more information.
+   */
+  export interface Schema$TextWithTooltip {
+    /**
+     * Value of the tooltip as a simple text.
+     */
+    simpleTooltipValue?: string | null;
+    /**
+     * Value of the message as a simple text.
+     */
+    simpleValue?: string | null;
+    /**
+     * The suggested type of an icon for tooltip, if a tooltip is present.
+     */
+    tooltipIconStyle?: string | null;
+  }
+  /**
    * A message that represents a time period.
    */
   export interface Schema$TimePeriod {
@@ -8932,6 +9199,28 @@ export namespace content_v2_1 {
      * Transit time range (min-max) in business days. 0 means same day delivery, 1 means next day delivery.
      */
     minTransitTimeInDays?: number | null;
+  }
+  /**
+   * The payload for the triggered action.
+   */
+  export interface Schema$TriggerActionPayload {
+    /**
+     * Required. The context from the selected action. The value is obtained from rendered issues and needs to be sent back to identify the action that is being triggered.
+     */
+    actionContext?: string | null;
+    /**
+     * Required. Input provided by the merchant.
+     */
+    actionInput?: Schema$ActionInput;
+  }
+  /**
+   * Response informing about the started action.
+   */
+  export interface Schema$TriggerActionResponse {
+    /**
+     * The message for merchant.
+     */
+    message?: string | null;
   }
   /**
    * Request message for the UndeleteConversionSource method.
@@ -17591,6 +17880,101 @@ export namespace content_v2_1 {
         return createAPIRequest<Schema$RenderProductIssuesResponse>(parameters);
       }
     }
+
+    /**
+     * Start an action. The action can be requested by merchants in third-party application. Before merchants can request the action, the third-party application needs to show them action specific content and display a user input form. The action can be successfully started only once all `required` inputs are provided. If any `required` input is missing, or invalid value was provided, the service will return 400 error. Validation errors will contain Ids for all problematic field together with translated, human readable error messages that can be shown to the user.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    triggeraction(
+      params: Params$Resource$Merchantsupport$Triggeraction,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    triggeraction(
+      params?: Params$Resource$Merchantsupport$Triggeraction,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$TriggerActionResponse>;
+    triggeraction(
+      params: Params$Resource$Merchantsupport$Triggeraction,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    triggeraction(
+      params: Params$Resource$Merchantsupport$Triggeraction,
+      options:
+        | MethodOptions
+        | BodyResponseCallback<Schema$TriggerActionResponse>,
+      callback: BodyResponseCallback<Schema$TriggerActionResponse>
+    ): void;
+    triggeraction(
+      params: Params$Resource$Merchantsupport$Triggeraction,
+      callback: BodyResponseCallback<Schema$TriggerActionResponse>
+    ): void;
+    triggeraction(
+      callback: BodyResponseCallback<Schema$TriggerActionResponse>
+    ): void;
+    triggeraction(
+      paramsOrCallback?:
+        | Params$Resource$Merchantsupport$Triggeraction
+        | BodyResponseCallback<Schema$TriggerActionResponse>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$TriggerActionResponse>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$TriggerActionResponse>
+        | BodyResponseCallback<Readable>
+    ):
+      | void
+      | GaxiosPromise<Schema$TriggerActionResponse>
+      | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Merchantsupport$Triggeraction;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Merchantsupport$Triggeraction;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl =
+        options.rootUrl || 'https://shoppingcontent.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (
+              rootUrl +
+              '/content/v2.1/{merchantId}/merchantsupport/triggeraction'
+            ).replace(/([^:]\/)\/+/g, '$1'),
+            method: 'POST',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['merchantId'],
+        pathParams: ['merchantId'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$TriggerActionResponse>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$TriggerActionResponse>(parameters);
+      }
+    }
   }
 
   export interface Params$Resource$Merchantsupport$Renderaccountissues
@@ -17636,6 +18020,22 @@ export namespace content_v2_1 {
      * Request body metadata
      */
     requestBody?: Schema$RenderProductIssuesRequestPayload;
+  }
+  export interface Params$Resource$Merchantsupport$Triggeraction
+    extends StandardParameters {
+    /**
+     * Optional. Language code [IETF BCP 47 syntax](https://tools.ietf.org/html/bcp47) used to localize the response. If not set, the result will be in default language `en-US`.
+     */
+    languageCode?: string;
+    /**
+     * Required. The ID of the merchant's account.
+     */
+    merchantId?: string;
+
+    /**
+     * Request body metadata
+     */
+    requestBody?: Schema$TriggerActionPayload;
   }
 
   export class Resource$Orderinvoices {
