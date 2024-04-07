@@ -341,6 +341,10 @@ export namespace dialogflow_v3beta1 {
      */
     displayName?: string | null;
     /**
+     * Optional. Enable training multi-lingual models for this agent. These models will be trained on all the languages supported by the agent.
+     */
+    enableMultiLanguageTraining?: boolean | null;
+    /**
      * Indicates if automatic spell correction is enabled in detect intent requests.
      */
     enableSpellCorrection?: boolean | null;
@@ -1643,6 +1647,10 @@ export namespace dialogflow_v3beta1 {
      */
     knowledgeConnectorSettings?: Schema$GoogleCloudDialogflowCxV3beta1KnowledgeConnectorSettings;
     /**
+     * Optional. Multi-lingual agent settings for this flow.
+     */
+    multiLanguageSettings?: Schema$GoogleCloudDialogflowCxV3beta1FlowMultiLanguageSettings;
+    /**
      * The unique identifier of the flow. Format: `projects//locations//agents//flows/`.
      */
     name?: string | null;
@@ -1667,6 +1675,19 @@ export namespace dialogflow_v3beta1 {
      * Optional. Global flow import strategy for resource conflict resolution. The import Import strategy for resource conflict resolution, applied globally throughout the flow. It will be applied for all display name conflicts in the imported content. If not specified, 'CREATE_NEW' is assumed.
      */
     globalImportStrategy?: string | null;
+  }
+  /**
+   * Settings for multi-lingual agents.
+   */
+  export interface Schema$GoogleCloudDialogflowCxV3beta1FlowMultiLanguageSettings {
+    /**
+     * Optional. Enable multi-language detection for this flow. This can be set only if agent level multi language setting is enabled.
+     */
+    enableMultiLanguageDetection?: boolean | null;
+    /**
+     * Optional. Agent will respond in the detected language if the detected language code is in the supported resolved languages for this flow. This will be used only if multi-language training is enabled in the agent and multi-language detection is enabled in the flow. The supported languages must be a subset of the languages supported by the agent.
+     */
+    supportedResponseLanguageCodes?: string[] | null;
   }
   /**
    * The response message for Flows.GetFlowValidationResult.
