@@ -5008,11 +5008,11 @@ export namespace documentai_v1beta3 {
      */
     modelType?: string | null;
     /**
-     * The resource name of the processor version. Format: `projects/{project\}/locations/{location\}/processors/{processor\}/processorVersions/{processor_version\}`
+     * Identifier. The resource name of the processor version. Format: `projects/{project\}/locations/{location\}/processors/{processor\}/processorVersions/{processor_version\}`
      */
     name?: string | null;
     /**
-     * The state of the processor version.
+     * Output only. The state of the processor version.
      */
     state?: string | null;
   }
