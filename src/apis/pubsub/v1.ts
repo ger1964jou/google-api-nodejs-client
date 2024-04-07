@@ -230,6 +230,10 @@ export namespace pubsub_v1 {
      */
     bucket?: string | null;
     /**
+     * Optional. User-provided format string specifying how to represent datetimes in Cloud Storage filenames. See the [datetime format guidance](https://cloud.google.com/pubsub/docs/create-cloudstorage-subscription#file_names).
+     */
+    filenameDatetimeFormat?: string | null;
+    /**
      * Optional. User-provided prefix for Cloud Storage filename. See the [object naming requirements](https://cloud.google.com/storage/docs/objects#naming).
      */
     filenamePrefix?: string | null;
