@@ -2056,7 +2056,7 @@ export namespace androidpublisher_v3 {
     offerTags?: string[] | null;
   }
   /**
-   * Represents a custom tag specified for base plans and subscription offers.
+   * Represents a custom tag specified for one-time products, purchase options, base plans and offers.
    */
   export interface Schema$OfferTag {
     /**
