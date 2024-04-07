@@ -3380,7 +3380,7 @@ export namespace drive_v3 {
     }
 
     /**
-     * Updates the metadate for a shared drive.
+     * Updates the metadata for a shared drive.
      *
      * @param params - Parameters for request
      * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
