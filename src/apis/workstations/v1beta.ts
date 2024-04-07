@@ -359,6 +359,10 @@ export namespace workstations_v1beta {
      * Optional. Network tags to add to the Compute Engine VMs backing the workstations. This option applies [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags) to VMs created with this configuration. These network tags enable the creation of [firewall rules](https://cloud.google.com/workstations/docs/configure-firewall-rules).
      */
     tags?: string[] | null;
+    /**
+     * Optional. Resource manager tags to be bound to this instance. Tag keys and values have the same definition as https://cloud.google.com/resource-manager/docs/tags/tags-overview Keys must be in the format `tagKeys/{tag_key_id\}`, and values are in the format `tagValues/456`.
+     */
+    vmTags?: {[key: string]: string} | null;
   }
   /**
    * An EphemeralDirectory is backed by a Compute Engine persistent disk.
