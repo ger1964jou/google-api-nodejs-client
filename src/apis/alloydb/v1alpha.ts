@@ -379,6 +379,10 @@ export namespace alloydb_v1alpha {
      */
     labels?: {[key: string]: string} | null;
     /**
+     * Output only. The maintenance schedule for the cluster, generated for a specific rollout if a maintenance window is set.
+     */
+    maintenanceSchedule?: Schema$MaintenanceSchedule;
+    /**
      * Optional. The maintenance update policy determines when to allow or deny updates.
      */
     maintenanceUpdatePolicy?: Schema$MaintenanceUpdatePolicy;
@@ -938,6 +942,15 @@ export namespace alloydb_v1alpha {
     cpuCount?: number | null;
   }
   /**
+   * MaintenanceSchedule stores the maintenance schedule generated from the MaintenanceUpdatePolicy, once a maintenance rollout is triggered, if MaintenanceWindow is set, and if there is no conflicting DenyPeriod. The schedule is cleared once the update takes place. This field cannot be manually changed; modify the MaintenanceUpdatePolicy instead.
+   */
+  export interface Schema$MaintenanceSchedule {
+    /**
+     * Output only. The scheduled start time for the maintenance.
+     */
+    startTime?: string | null;
+  }
+  /**
    * MaintenanceUpdatePolicy defines the policy for system updates.
    */
   export interface Schema$MaintenanceUpdatePolicy {
@@ -1149,46 +1162,17 @@ export namespace alloydb_v1alpha {
    */
   export interface Schema$PscInstanceConfig {
     /**
-     * Optional. List of consumer networks that are allowed to create PSC endpoints to service-attachments to this instance.
-     */
-    allowedConsumerNetworks?: string[] | null;
-    /**
      * Optional. List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
      */
     allowedConsumerProjects?: string[] | null;
-    /**
-     * Optional. List of service attachments that this instance has created endpoints to connect with. Currently, only a single outgoing service attachment is supported per instance.
-     */
-    outgoingServiceAttachmentLinks?: string[] | null;
     /**
      * Output only. The DNS name of the instance for PSC connectivity. Name convention: ...alloydb-psc.goog
      */
     pscDnsName?: string | null;
     /**
-     * Optional. Whether PSC connectivity is enabled for this instance. This is populated by referencing the value from the parent cluster.
-     */
-    pscEnabled?: boolean | null;
-    /**
-     * Optional. Configurations for setting up PSC interfaces attached to the instance which are used for outbound connectivity. Only primary instances can have PSC interface attached. All the VMs created for the primary instance will share the same configurations. Currently we only support 0 or 1 PSC interface.
-     */
-    pscInterfaceConfigs?: Schema$PscInterfaceConfig[];
-    /**
      * Output only. The service attachment created when Private Service Connect (PSC) is enabled for the instance. The name of the resource will be in the format of `projects//regions//serviceAttachments/`
      */
     serviceAttachmentLink?: string | null;
-  }
-  /**
-   * Configuration for setting up a PSC interface. This information needs to be provided by the customer. PSC interfaces will be created and added to VMs via SLM (adding a network interface will require recreating the VM). For HA instances this will be done via LDTM.
-   */
-  export interface Schema$PscInterfaceConfig {
-    /**
-     * A list of endpoints in the consumer VPC the interface might initiate outbound connections to. This list has to be provided when the PSC interface is created.
-     */
-    consumerEndpointIps?: string[] | null;
-    /**
-     * The NetworkAttachment resource created in the consumer VPC to which the PSC interface will be linked, in the form of: `projects/${CONSUMER_PROJECT\}/regions/${REGION\}/networkAttachments/${NETWORK_ATTACHMENT_NAME\}`. NetworkAttachment has to be provided when the PSC interface is created.
-     */
-    networkAttachment?: string | null;
   }
   /**
    * A backup's position in a quantity-based retention queue, of backups with the same source cluster and type, with length, retention, specified by the backup's retention policy. Once the position is greater than the retention, the backup is eligible to be garbage collected. Example: 5 backups from the same source cluster and type with a quantity-based retention of 3 and denoted by backup_id (position, retention). Safe: backup_5 (1, 3), backup_4, (2, 3), backup_3 (3, 3). Awaiting garbage collection: backup_2 (4, 3), backup_1 (5, 3)
