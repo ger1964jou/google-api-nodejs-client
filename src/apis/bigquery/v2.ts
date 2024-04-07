@@ -916,6 +916,10 @@ export namespace bigquery_v2 {
      */
     etag?: string | null;
     /**
+     * Optional. Options defining open source compatible datasets living in the BigQuery catalog. Contains metadata of open source database, schema or namespace represented by the current dataset.
+     */
+    externalCatalogDatasetOptions?: Schema$ExternalCatalogDatasetOptions;
+    /**
      * Optional. Reference to a read-only external dataset defined in data catalogs outside of BigQuery. Filled out when the dataset type is EXTERNAL.
      */
     externalDatasetReference?: Schema$ExternalDatasetReference;
@@ -1076,6 +1080,35 @@ export namespace bigquery_v2 {
      * Optional. The labels associated with this table. You can use these to organize and group your tables. This will only be used if the destination table is newly created. If the table already exists and labels are different than the current labels are provided, the job will fail.
      */
     labels?: {[key: string]: string} | null;
+  }
+  /**
+   * Represents privacy policy associated with "differential privacy" method.
+   */
+  export interface Schema$DifferentialPrivacyPolicy {
+    /**
+     * Optional. The total delta budget for all queries against the privacy-protected view. Each subscriber query against this view charges the amount of delta that is pre-defined by the contributor through the privacy policy delta_per_query field. If there is sufficient budget, then the subscriber query attempts to complete. It might still fail due to other reasons, in which case the charge is refunded. If there is insufficient budget the query is rejected. There might be multiple charge attempts if a single query references multiple views. In this case there must be sufficient budget for all charges or the query is rejected and charges are refunded in best effort. The budget does not have a refresh policy and can only be updated via ALTER VIEW or circumvented by creating a new view that can be queried with a fresh budget.
+     */
+    deltaBudget?: number | null;
+    /**
+     * Optional. The delta value that is used per query. Delta represents the probability that any row will fail to be epsilon differentially private. Indicates the risk associated with exposing aggregate rows in the result of a query.
+     */
+    deltaPerQuery?: number | null;
+    /**
+     * Optional. The total epsilon budget for all queries against the privacy-protected view. Each subscriber query against this view charges the amount of epsilon they request in their query. If there is sufficient budget, then the subscriber query attempts to complete. It might still fail due to other reasons, in which case the charge is refunded. If there is insufficient budget the query is rejected. There might be multiple charge attempts if a single query references multiple views. In this case there must be sufficient budget for all charges or the query is rejected and charges are refunded in best effort. The budget does not have a refresh policy and can only be updated via ALTER VIEW or circumvented by creating a new view that can be queried with a fresh budget.
+     */
+    epsilonBudget?: number | null;
+    /**
+     * Optional. The maximum epsilon value that a query can consume. If the subscriber specifies epsilon as a parameter in a SELECT query, it must be less than or equal to this value. The epsilon parameter controls the amount of noise that is added to the groups — a higher epsilon means less noise.
+     */
+    maxEpsilonPerQuery?: number | null;
+    /**
+     * Optional. The maximum groups contributed value that is used per query. Represents the maximum number of groups to which each protected entity can contribute. Changing this value does not improve or worsen privacy. The best value for accuracy and utility depends on the query and data.
+     */
+    maxGroupsContributed?: string | null;
+    /**
+     * Optional. The privacy unit column associated with this policy. Differential privacy policies can only have one privacy unit column per data source object (table, view).
+     */
+    privacyUnitColumn?: string | null;
   }
   /**
    * Model evaluation metrics for dimensionality reduction models.
@@ -1399,6 +1432,36 @@ export namespace bigquery_v2 {
      * Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
      */
     title?: string | null;
+  }
+  /**
+   * Options defining open source compatible datasets living in the BigQuery catalog. Contains metadata of open source database, schema or namespace represented by the current dataset.
+   */
+  export interface Schema$ExternalCatalogDatasetOptions {
+    /**
+     * Optional. The storage location URI for all tables in the dataset. Equivalent to hive metastore's database locationUri. Maximum length of 1024 characters.
+     */
+    defaultStorageLocationUri?: string | null;
+    /**
+     * Optional. A map of key value pairs defining the parameters and properties of the open source schema. Maximum size of 2Mib.
+     */
+    parameters?: {[key: string]: string} | null;
+  }
+  /**
+   * Metadata about open source compatible table. The fields contained in these options correspond to hive metastore's table level properties.
+   */
+  export interface Schema$ExternalCatalogTableOptions {
+    /**
+     * Optional. The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connection is needed to read the open source table from BigQuery Engine. The connection_id can have the form `..` or `projects//locations//connections/`.
+     */
+    connectionId?: string | null;
+    /**
+     * Optional. A map of key value pairs defining the parameters and properties of the open source table. Corresponds with hive meta store table parameters. Maximum size of 4Mib.
+     */
+    parameters?: {[key: string]: string} | null;
+    /**
+     * Optional. A storage descriptor containing information about the physical storage of this table.
+     */
+    storageDescriptor?: Schema$StorageDescriptor;
   }
   export interface Schema$ExternalDataConfiguration {
     /**
@@ -2794,6 +2857,19 @@ export namespace bigquery_v2 {
     state?: string | null;
   }
   /**
+   * Represents privacy policy associated with "join restrictions". Join restriction gives data providers the ability to enforce joins on the 'join_allowed_columns' when data is queried from a privacy protected view.
+   */
+  export interface Schema$JoinRestrictionPolicy {
+    /**
+     * Optional. The only columns that joins are allowed on. This field is must be specified for join_conditions JOIN_ANY and JOIN_ALL and it cannot be set for JOIN_BLOCKED.
+     */
+    joinAllowedColumns?: string[] | null;
+    /**
+     * Optional. Specifies if a join is required or not on queries for the view. Default is JOIN_CONDITION_UNSPECIFIED.
+     */
+    joinCondition?: string | null;
+  }
+  /**
    * Represents a single JSON object.
    */
   export interface Schema$JsonObject {}
@@ -3179,6 +3255,15 @@ export namespace bigquery_v2 {
     partitionedColumn?: Schema$PartitionedColumn[];
   }
   /**
+   * Partition skew detailed information.
+   */
+  export interface Schema$PartitionSkew {
+    /**
+     * Output only. Source stages which produce skewed data.
+     */
+    skewSources?: Schema$SkewSource[];
+  }
+  /**
    * Performance insights for the job.
    */
   export interface Schema$PerformanceInsights {
@@ -3245,6 +3330,14 @@ export namespace bigquery_v2 {
      * Optional. Policy used for aggregation thresholds.
      */
     aggregationThresholdPolicy?: Schema$AggregationThresholdPolicy;
+    /**
+     * Optional. Policy used for differential privacy.
+     */
+    differentialPrivacyPolicy?: Schema$DifferentialPrivacyPolicy;
+    /**
+     * Optional. Join restriction policy is outside of the one of policies, since this policy can be set along with other policies. This policy gives data providers the ability to enforce joins on the 'join_allowed_columns' when data is queried from a privacy protected view.
+     */
+    joinRestrictionPolicy?: Schema$JoinRestrictionPolicy;
   }
   /**
    * Response object of ListProjects
@@ -3888,6 +3981,23 @@ export namespace bigquery_v2 {
     indexUsageMode?: string | null;
   }
   /**
+   * Serializer and deserializer information.
+   */
+  export interface Schema$SerDeInfo {
+    /**
+     * Optional. Name of the SerDe. The maximum length is 256 characters.
+     */
+    name?: string | null;
+    /**
+     * Optional. Key-value pairs that define the initialization parameters for the serialization library. Maximum size 10 Kib.
+     */
+    parameters?: {[key: string]: string} | null;
+    /**
+     * Required. Specifies a fully-qualified class name of the serialization library that is responsible for the translation of data between table representation and the underlying low-level input and output format structures. The maximum length is 256 characters.
+     */
+    serializationLibrary?: string | null;
+  }
+  /**
    * [Preview] Information related to sessions.
    */
   export interface Schema$SessionInfo {
@@ -3908,6 +4018,15 @@ export namespace bigquery_v2 {
      * OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only the fields in the mask will be modified. If no mask is provided, the following default mask is used: `paths: "bindings, etag"`
      */
     updateMask?: string | null;
+  }
+  /**
+   * Details about source stages which produce skewed data.
+   */
+  export interface Schema$SkewSource {
+    /**
+     * Output only. Stage id of the skew source stage.
+     */
+    stageId?: string | null;
   }
   /**
    * Information about base table and snapshot time of the snapshot.
@@ -4039,6 +4158,10 @@ export namespace bigquery_v2 {
      */
     insufficientShuffleQuota?: boolean | null;
     /**
+     * Output only. Partition skew in the stage.
+     */
+    partitionSkew?: Schema$PartitionSkew;
+    /**
      * Output only. True if the stage has a slot contention issue.
      */
     slotContention?: boolean | null;
@@ -4098,6 +4221,27 @@ export namespace bigquery_v2 {
      * The columns in this table type
      */
     columns?: Schema$StandardSqlField[];
+  }
+  /**
+   * Contains information about how a table's data is stored and accessed by open source query engines.
+   */
+  export interface Schema$StorageDescriptor {
+    /**
+     * Optional. Specifies the fully qualified class name of the InputFormat (e.g. "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat"). The maximum length is 128 characters.
+     */
+    inputFormat?: string | null;
+    /**
+     * Optional. The physical location of the table (e.g. 'gs://spark-dataproc-data/pangea-data/case_sensitive/' or 'gs://spark-dataproc-data/pangea-data/x'). The maximum length is 2056 bytes.
+     */
+    locationUri?: string | null;
+    /**
+     * Optional. Specifies the fully qualified class name of the OutputFormat (e.g. "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat"). The maximum length is 128 characters.
+     */
+    outputFormat?: string | null;
+    /**
+     * Optional. Serializer and deserializer information.
+     */
+    serdeInfo?: Schema$SerDeInfo;
   }
   export interface Schema$Streamingbuffer {
     /**
@@ -4176,6 +4320,10 @@ export namespace bigquery_v2 {
      * Optional. The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed. The defaultTableExpirationMs property of the encapsulating dataset can be used to set a default expirationTime on newly created tables.
      */
     expirationTime?: string | null;
+    /**
+     * Optional. Options defining open source compatible table.
+     */
+    externalCatalogTableOptions?: Schema$ExternalCatalogTableOptions;
     /**
      * Optional. Describes the data format, location, and other properties of a table stored outside of BigQuery. By defining these properties, the data source can then be queried as if it were a standard BigQuery table.
      */
@@ -5053,7 +5201,7 @@ export namespace bigquery_v2 {
    */
   export interface Schema$UndeleteDatasetRequest {
     /**
-     * Optional. The exact time when the dataset was deleted. If not specified, it will undelete the most recently deleted version.
+     * Optional. The exact time when the dataset was deleted. If not specified, the most recently deleted version is undeleted.
      */
     deletionTime?: string | null;
   }
@@ -7393,6 +7541,93 @@ export namespace bigquery_v2 {
     }
 
     /**
+     * Gets the access control policy for a resource. Returns an empty policy if the resource exists and does not have a policy set.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    getIamPolicy(
+      params: Params$Resource$Routines$Getiampolicy,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    getIamPolicy(
+      params?: Params$Resource$Routines$Getiampolicy,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$Policy>;
+    getIamPolicy(
+      params: Params$Resource$Routines$Getiampolicy,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    getIamPolicy(
+      params: Params$Resource$Routines$Getiampolicy,
+      options: MethodOptions | BodyResponseCallback<Schema$Policy>,
+      callback: BodyResponseCallback<Schema$Policy>
+    ): void;
+    getIamPolicy(
+      params: Params$Resource$Routines$Getiampolicy,
+      callback: BodyResponseCallback<Schema$Policy>
+    ): void;
+    getIamPolicy(callback: BodyResponseCallback<Schema$Policy>): void;
+    getIamPolicy(
+      paramsOrCallback?:
+        | Params$Resource$Routines$Getiampolicy
+        | BodyResponseCallback<Schema$Policy>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$Policy>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$Policy>
+        | BodyResponseCallback<Readable>
+    ): void | GaxiosPromise<Schema$Policy> | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Routines$Getiampolicy;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Routines$Getiampolicy;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://bigquery.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/bigquery/v2/{+resource}:getIamPolicy').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'POST',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['resource'],
+        pathParams: ['resource'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$Policy>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$Policy>(parameters);
+      }
+    }
+
+    /**
      * Creates a new routine in the dataset.
      *
      * @param params - Parameters for request
@@ -7570,6 +7805,93 @@ export namespace bigquery_v2 {
     }
 
     /**
+     * Sets the access control policy on the specified resource. Replaces any existing policy. Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    setIamPolicy(
+      params: Params$Resource$Routines$Setiampolicy,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    setIamPolicy(
+      params?: Params$Resource$Routines$Setiampolicy,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$Policy>;
+    setIamPolicy(
+      params: Params$Resource$Routines$Setiampolicy,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    setIamPolicy(
+      params: Params$Resource$Routines$Setiampolicy,
+      options: MethodOptions | BodyResponseCallback<Schema$Policy>,
+      callback: BodyResponseCallback<Schema$Policy>
+    ): void;
+    setIamPolicy(
+      params: Params$Resource$Routines$Setiampolicy,
+      callback: BodyResponseCallback<Schema$Policy>
+    ): void;
+    setIamPolicy(callback: BodyResponseCallback<Schema$Policy>): void;
+    setIamPolicy(
+      paramsOrCallback?:
+        | Params$Resource$Routines$Setiampolicy
+        | BodyResponseCallback<Schema$Policy>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$Policy>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$Policy>
+        | BodyResponseCallback<Readable>
+    ): void | GaxiosPromise<Schema$Policy> | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Routines$Setiampolicy;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Routines$Setiampolicy;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://bigquery.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/bigquery/v2/{+resource}:setIamPolicy').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'POST',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['resource'],
+        pathParams: ['resource'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$Policy>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$Policy>(parameters);
+      }
+    }
+
+    /**
      * Updates information in an existing routine. The update method replaces the entire Routine resource.
      *
      * @param params - Parameters for request
@@ -7688,6 +8010,18 @@ export namespace bigquery_v2 {
      */
     routineId?: string;
   }
+  export interface Params$Resource$Routines$Getiampolicy
+    extends StandardParameters {
+    /**
+     * REQUIRED: The resource for which the policy is being requested. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
+     */
+    resource?: string;
+
+    /**
+     * Request body metadata
+     */
+    requestBody?: Schema$GetIamPolicyRequest;
+  }
   export interface Params$Resource$Routines$Insert extends StandardParameters {
     /**
      * Required. Dataset ID of the new routine
@@ -7728,6 +8062,18 @@ export namespace bigquery_v2 {
      * If set, then only the Routine fields in the field mask, as well as project_id, dataset_id and routine_id, are returned in the response. If unset, then the following Routine fields are returned: etag, project_id, dataset_id, routine_id, routine_type, creation_time, last_modified_time, and language.
      */
     readMask?: string;
+  }
+  export interface Params$Resource$Routines$Setiampolicy
+    extends StandardParameters {
+    /**
+     * REQUIRED: The resource for which the policy is being specified. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
+     */
+    resource?: string;
+
+    /**
+     * Request body metadata
+     */
+    requestBody?: Schema$SetIamPolicyRequest;
   }
   export interface Params$Resource$Routines$Update extends StandardParameters {
     /**
