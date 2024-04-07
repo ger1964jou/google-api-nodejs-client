@@ -3019,6 +3019,27 @@ export namespace gkehub_v1alpha {
     type?: Schema$ServiceMeshType;
   }
   /**
+   * Condition being reported.
+   */
+  export interface Schema$ServiceMeshCondition {
+    /**
+     * Unique identifier of the condition which describes the condition recognizable to the user.
+     */
+    code?: string | null;
+    /**
+     * A short summary about the issue.
+     */
+    details?: string | null;
+    /**
+     * Links contains actionable information.
+     */
+    documentationLink?: string | null;
+    /**
+     * Severity level of the condition.
+     */
+    severity?: string | null;
+  }
+  /**
    * Status of control plane management.
    */
   export interface Schema$ServiceMeshControlPlaneManagement {
@@ -3026,6 +3047,10 @@ export namespace gkehub_v1alpha {
      * Explanation of state.
      */
     details?: Schema$ServiceMeshStatusDetails[];
+    /**
+     * Output only. Implementation of managed control plane.
+     */
+    implementation?: string | null;
     /**
      * LifecycleState of control plane management.
      */
@@ -3078,6 +3103,10 @@ export namespace gkehub_v1alpha {
      * Output only. Results of running Service Mesh analyzers.
      */
     analysisMessages?: Schema$ServiceMeshAnalysisMessage[];
+    /**
+     * Output only. List of condition reporting membership statues
+     */
+    conditions?: Schema$ServiceMeshCondition[];
     /**
      * The API version (i.e. Istio CRD version) for configuring service mesh in this cluster. This version is influenced by the `default_channel` field.
      */
