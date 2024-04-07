@@ -1362,7 +1362,7 @@ export namespace dataform_v1beta1 {
      */
     invocationConfig?: Schema$InvocationConfig;
     /**
-     * Output only. The workflow config's name.
+     * Identifier. The workflow config's name.
      */
     name?: string | null;
     /**
@@ -4959,7 +4959,7 @@ export namespace dataform_v1beta1 {
   export interface Params$Resource$Projects$Locations$Repositories$Workflowconfigs$Patch
     extends StandardParameters {
     /**
-     * Output only. The workflow config's name.
+     * Identifier. The workflow config's name.
      */
     name?: string;
     /**
