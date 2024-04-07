@@ -606,6 +606,27 @@ export namespace firestore_v1 {
     unaryFilter?: Schema$UnaryFilter;
   }
   /**
+   * Nearest Neighbors search config.
+   */
+  export interface Schema$FindNearest {
+    /**
+     * Required. The Distance Measure to use, required.
+     */
+    distanceMeasure?: string | null;
+    /**
+     * Required. The number of nearest neighbors to return. Must be a positive integer of no more than 1000.
+     */
+    limit?: number | null;
+    /**
+     * Required. The query vector that we are searching on. Must be a vector of no more than 2048 dimensions.
+     */
+    queryVector?: Schema$Value;
+    /**
+     * Required. An indexed vector field to search upon. Only documents which contain vectors whose dimensionality match the query_vector can be returned.
+     */
+    vectorField?: Schema$FieldReference;
+  }
+  /**
    * A Backup of a Cloud Firestore Database. The backup contains all documents and index configurations for the given database at a specific point in time.
    */
   export interface Schema$GoogleFirestoreAdminV1Backup {
@@ -1694,6 +1715,10 @@ export namespace firestore_v1 {
      * A potential prefix of a position in the result set to end the query at. This is similar to `START_AT` but with it controlling the end position rather than the start position. Requires: * The number of values cannot be greater than the number of fields specified in the `ORDER BY` clause.
      */
     endAt?: Schema$Cursor;
+    /**
+     * Optional. A potential Nearest Neighbors Search. Applies after all other filters and ordering. Finds the closest vector embeddings to the given query vector.
+     */
+    findNearest?: Schema$FindNearest;
     /**
      * The collections to query.
      */
