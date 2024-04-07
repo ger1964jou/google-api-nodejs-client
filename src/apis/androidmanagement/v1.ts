@@ -2806,7 +2806,7 @@ export namespace androidmanagement_v1 {
      */
     lostOrganization?: Schema$UserFacingMessage;
     /**
-     * The phone number displayed to the user when the device is in lost mode.
+     * The phone number that will be called when the device is in lost mode and the call owner button is tapped.
      */
     lostPhoneNumber?: Schema$UserFacingMessage;
     /**
