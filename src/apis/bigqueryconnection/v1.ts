@@ -379,6 +379,10 @@ export namespace bigqueryconnection_v1 {
      * Specifies how to reach the remote system this connection is pointing to.
      */
     endpoint?: Schema$ConnectorConfigurationEndpoint;
+    /**
+     * Networking configuration.
+     */
+    network?: Schema$ConnectorConfigurationNetwork;
   }
   /**
    * Client authentication.
@@ -397,6 +401,24 @@ export namespace bigqueryconnection_v1 {
      * Host and port in a format of `hostname:port` as defined in https://www.ietf.org/rfc/rfc3986.html#section-3.2.2 and https://www.ietf.org/rfc/rfc3986.html#section-3.2.3.
      */
     hostPort?: string | null;
+  }
+  /**
+   * Network related configuration.
+   */
+  export interface Schema$ConnectorConfigurationNetwork {
+    /**
+     * Private Service Connect networking configuration.
+     */
+    privateServiceConnect?: Schema$ConnectorConfigurationPrivateServiceConnect;
+  }
+  /**
+   * Private Service Connect configuration.
+   */
+  export interface Schema$ConnectorConfigurationPrivateServiceConnect {
+    /**
+     * Required. Network Attachment name in the format of `projects/{project\}/regions/{region\}/networkAttachments/{networkattachment\}`.
+     */
+    networkAttachment?: string | null;
   }
   /**
    * Secret value parameter.
