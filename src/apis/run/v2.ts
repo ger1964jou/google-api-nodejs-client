@@ -133,6 +133,10 @@ export namespace run_v2 {
      */
     breakglassJustification?: string | null;
     /**
+     * The path to a binary authorization policy. Format: projects/{project\}/platforms/cloudRun/{policy-name\}
+     */
+    policy?: string | null;
+    /**
      * If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled.
      */
     useDefault?: boolean | null;
@@ -478,15 +482,50 @@ export namespace run_v2 {
     template?: Schema$GoogleCloudRunV2TaskTemplate;
   }
   /**
-   * Represents a GCS Bucket mounted as a volume.
+   * Request message for exporting Cloud Run image.
+   */
+  export interface Schema$GoogleCloudRunV2ExportImageRequest {
+    /**
+     * Required. The export destination url (the Artifact Registry repo).
+     */
+    destinationRepo?: string | null;
+  }
+  /**
+   * ExportImageResponse contains an operation Id to track the image export operation.
+   */
+  export interface Schema$GoogleCloudRunV2ExportImageResponse {
+    /**
+     * An operation ID used to track the status of image exports tied to the original pod ID in the request.
+     */
+    operationId?: string | null;
+  }
+  /**
+   * ExportStatusResponse contains the status of image export operation, with the status of each image export job.
+   */
+  export interface Schema$GoogleCloudRunV2ExportStatusResponse {
+    /**
+     * The status of each image export job.
+     */
+    imageExportStatuses?: Schema$GoogleCloudRunV2ImageExportStatus[];
+    /**
+     * The operation id.
+     */
+    operationId?: string | null;
+    /**
+     * Output only. The state of the overall export operation.
+     */
+    operationState?: string | null;
+  }
+  /**
+   * Represents a volume backed by a Cloud Storage bucket using Cloud Storage FUSE.
    */
   export interface Schema$GoogleCloudRunV2GCSVolumeSource {
     /**
-     * GCS Bucket name
+     * Cloud Storage Bucket name.
      */
     bucket?: string | null;
     /**
-     * If true, mount the GCS bucket as read-only
+     * If true, the volume will be mounted as read only for all mounts.
      */
     readOnly?: boolean | null;
   }
@@ -532,6 +571,27 @@ export namespace run_v2 {
      * The header field value
      */
     value?: string | null;
+  }
+  /**
+   * The status of an image export job.
+   */
+  export interface Schema$GoogleCloudRunV2ImageExportStatus {
+    /**
+     * The exported image ID as it will appear in Artifact Registry.
+     */
+    exportedImageDigest?: string | null;
+    /**
+     * Output only. Has the image export job finished (regardless of successful or failure).
+     */
+    exportJobState?: string | null;
+    /**
+     * The status of the export task if done.
+     */
+    status?: Schema$UtilStatusProto;
+    /**
+     * The image tag as it will appear in Artifact Registry.
+     */
+    tag?: string | null;
   }
   /**
    * Job represents the configuration of a single job, which references a container image that is run to completion.
@@ -700,6 +760,15 @@ export namespace run_v2 {
     tasks?: Schema$GoogleCloudRunV2Task[];
   }
   /**
+   * Metadata represents the JSON encoded generated customer metadata.
+   */
+  export interface Schema$GoogleCloudRunV2Metadata {
+    /**
+     * JSON encoded Google-generated Customer Metadata for a given resource/project.
+     */
+    metadata?: string | null;
+  }
+  /**
    * Direct VPC egress settings.
    */
   export interface Schema$GoogleCloudRunV2NetworkInterface {
@@ -725,7 +794,7 @@ export namespace run_v2 {
      */
     path?: string | null;
     /**
-     * If true, mount the NFS volume as read only
+     * If true, the volume will be mounted as read only for all mounts.
      */
     readOnly?: boolean | null;
     /**
@@ -2516,6 +2585,35 @@ export namespace run_v2 {
      */
     title?: string | null;
   }
+  /**
+   * This is proto2's version of MessageSet.
+   */
+  export interface Schema$Proto2BridgeMessageSet {}
+  /**
+   * Wire-format for a Status object
+   */
+  export interface Schema$UtilStatusProto {
+    /**
+     * The canonical error code (see codes.proto) that most closely corresponds to this status. This may be missing, and in the common case of the generic space, it definitely will be.
+     */
+    canonicalCode?: number | null;
+    /**
+     * Numeric code drawn from the space specified below. Often, this is the canonical error space, and code is drawn from google3/util/task/codes.proto
+     */
+    code?: number | null;
+    /**
+     * Detail message
+     */
+    message?: string | null;
+    /**
+     * message_set associates an arbitrary proto message with the status.
+     */
+    messageSet?: Schema$Proto2BridgeMessageSet;
+    /**
+     * The following are usually only present when code != 0 Space to which this status belongs
+     */
+    space?: string | null;
+  }
 
   export class Resource$Projects {
     context: APIRequestContext;
@@ -2539,6 +2637,317 @@ export namespace run_v2 {
       );
       this.services = new Resource$Projects$Locations$Services(this.context);
     }
+
+    /**
+     * Export image for a given resource.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    exportImage(
+      params: Params$Resource$Projects$Locations$Exportimage,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    exportImage(
+      params?: Params$Resource$Projects$Locations$Exportimage,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$GoogleCloudRunV2ExportImageResponse>;
+    exportImage(
+      params: Params$Resource$Projects$Locations$Exportimage,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    exportImage(
+      params: Params$Resource$Projects$Locations$Exportimage,
+      options:
+        | MethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportImageResponse>,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportImageResponse>
+    ): void;
+    exportImage(
+      params: Params$Resource$Projects$Locations$Exportimage,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportImageResponse>
+    ): void;
+    exportImage(
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportImageResponse>
+    ): void;
+    exportImage(
+      paramsOrCallback?:
+        | Params$Resource$Projects$Locations$Exportimage
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportImageResponse>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportImageResponse>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportImageResponse>
+        | BodyResponseCallback<Readable>
+    ):
+      | void
+      | GaxiosPromise<Schema$GoogleCloudRunV2ExportImageResponse>
+      | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Projects$Locations$Exportimage;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Projects$Locations$Exportimage;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://run.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/v2/{+name}:exportImage').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'POST',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['name'],
+        pathParams: ['name'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$GoogleCloudRunV2ExportImageResponse>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$GoogleCloudRunV2ExportImageResponse>(
+          parameters
+        );
+      }
+    }
+
+    /**
+     * Export image metadata for a given resource.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    exportImageMetadata(
+      params: Params$Resource$Projects$Locations$Exportimagemetadata,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    exportImageMetadata(
+      params?: Params$Resource$Projects$Locations$Exportimagemetadata,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$GoogleCloudRunV2Metadata>;
+    exportImageMetadata(
+      params: Params$Resource$Projects$Locations$Exportimagemetadata,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    exportImageMetadata(
+      params: Params$Resource$Projects$Locations$Exportimagemetadata,
+      options:
+        | MethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+    ): void;
+    exportImageMetadata(
+      params: Params$Resource$Projects$Locations$Exportimagemetadata,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+    ): void;
+    exportImageMetadata(
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+    ): void;
+    exportImageMetadata(
+      paramsOrCallback?:
+        | Params$Resource$Projects$Locations$Exportimagemetadata
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+        | BodyResponseCallback<Readable>
+    ):
+      | void
+      | GaxiosPromise<Schema$GoogleCloudRunV2Metadata>
+      | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Projects$Locations$Exportimagemetadata;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Projects$Locations$Exportimagemetadata;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://run.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/v2/{+name}:exportImageMetadata').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'GET',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['name'],
+        pathParams: ['name'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$GoogleCloudRunV2Metadata>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$GoogleCloudRunV2Metadata>(parameters);
+      }
+    }
+
+    /**
+     * Export generated customer metadata for a given resource.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    exportMetadata(
+      params: Params$Resource$Projects$Locations$Exportmetadata,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    exportMetadata(
+      params?: Params$Resource$Projects$Locations$Exportmetadata,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$GoogleCloudRunV2Metadata>;
+    exportMetadata(
+      params: Params$Resource$Projects$Locations$Exportmetadata,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    exportMetadata(
+      params: Params$Resource$Projects$Locations$Exportmetadata,
+      options:
+        | MethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+    ): void;
+    exportMetadata(
+      params: Params$Resource$Projects$Locations$Exportmetadata,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+    ): void;
+    exportMetadata(
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+    ): void;
+    exportMetadata(
+      paramsOrCallback?:
+        | Params$Resource$Projects$Locations$Exportmetadata
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$GoogleCloudRunV2Metadata>
+        | BodyResponseCallback<Readable>
+    ):
+      | void
+      | GaxiosPromise<Schema$GoogleCloudRunV2Metadata>
+      | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Projects$Locations$Exportmetadata;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params = {} as Params$Resource$Projects$Locations$Exportmetadata;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://run.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/v2/{+name}:exportMetadata').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'GET',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['name'],
+        pathParams: ['name'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$GoogleCloudRunV2Metadata>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$GoogleCloudRunV2Metadata>(parameters);
+      }
+    }
+  }
+
+  export interface Params$Resource$Projects$Locations$Exportimage
+    extends StandardParameters {
+    /**
+     * Required. The name of the resource of which image metadata should be exported. Format: `projects/{project_id_or_number\}/locations/{location\}/services/{service\}/revisions/{revision\}` for Revision `projects/{project_id_or_number\}/locations/{location\}/jobs/{job\}/executions/{execution\}` for Execution
+     */
+    name?: string;
+
+    /**
+     * Request body metadata
+     */
+    requestBody?: Schema$GoogleCloudRunV2ExportImageRequest;
+  }
+  export interface Params$Resource$Projects$Locations$Exportimagemetadata
+    extends StandardParameters {
+    /**
+     * Required. The name of the resource of which image metadata should be exported. Format: `projects/{project_id_or_number\}/locations/{location\}/services/{service\}/revisions/{revision\}` for Revision `projects/{project_id_or_number\}/locations/{location\}/jobs/{job\}/executions/{execution\}` for Execution
+     */
+    name?: string;
+  }
+  export interface Params$Resource$Projects$Locations$Exportmetadata
+    extends StandardParameters {
+    /**
+     * Required. The name of the resource of which metadata should be exported. Format: `projects/{project_id_or_number\}/locations/{location\}/services/{service\}` for Service `projects/{project_id_or_number\}/locations/{location\}/services/{service\}/revisions/{revision\}` for Revision `projects/{project_id_or_number\}/locations/{location\}/jobs/{job\}/executions/{execution\}` for Execution
+     */
+    name?: string;
   }
 
   export class Resource$Projects$Locations$Jobs {
@@ -3701,6 +4110,103 @@ export namespace run_v2 {
     }
 
     /**
+     * Read the status of an image export operation.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    exportStatus(
+      params?: Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$GoogleCloudRunV2ExportStatusResponse>;
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus,
+      options:
+        | MethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+    ): void;
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+    ): void;
+    exportStatus(
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+    ): void;
+    exportStatus(
+      paramsOrCallback?:
+        | Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+        | BodyResponseCallback<Readable>
+    ):
+      | void
+      | GaxiosPromise<Schema$GoogleCloudRunV2ExportStatusResponse>
+      | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params =
+          {} as Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://run.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/v2/{+name}/{+operationId}:exportStatus').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'GET',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['name', 'operationId'],
+        pathParams: ['name', 'operationId'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$GoogleCloudRunV2ExportStatusResponse>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$GoogleCloudRunV2ExportStatusResponse>(
+          parameters
+        );
+      }
+    }
+
+    /**
      * Gets information about an Execution.
      *
      * @param params - Parameters for request
@@ -3912,6 +4418,17 @@ export namespace run_v2 {
      * Indicates that the request should be validated without actually deleting any resources.
      */
     validateOnly?: boolean;
+  }
+  export interface Params$Resource$Projects$Locations$Jobs$Executions$Exportstatus
+    extends StandardParameters {
+    /**
+     * Required. The name of the resource of which image export operation status has to be fetched. Format: `projects/{project_id_or_number\}/locations/{location\}/services/{service\}/revisions/{revision\}` for Revision `projects/{project_id_or_number\}/locations/{location\}/jobs/{job\}/executions/{execution\}` for Execution
+     */
+    name?: string;
+    /**
+     * Required. The operation id returned from ExportImage.
+     */
+    operationId?: string;
   }
   export interface Params$Resource$Projects$Locations$Jobs$Executions$Get
     extends StandardParameters {
@@ -5552,6 +6069,103 @@ export namespace run_v2 {
     }
 
     /**
+     * Read the status of an image export operation.
+     *
+     * @param params - Parameters for request
+     * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+     * @param callback - Optional callback that handles the response.
+     * @returns A promise if used with async/await, or void if used with a callback.
+     */
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Services$Revisions$Exportstatus,
+      options: StreamMethodOptions
+    ): GaxiosPromise<Readable>;
+    exportStatus(
+      params?: Params$Resource$Projects$Locations$Services$Revisions$Exportstatus,
+      options?: MethodOptions
+    ): GaxiosPromise<Schema$GoogleCloudRunV2ExportStatusResponse>;
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Services$Revisions$Exportstatus,
+      options: StreamMethodOptions | BodyResponseCallback<Readable>,
+      callback: BodyResponseCallback<Readable>
+    ): void;
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Services$Revisions$Exportstatus,
+      options:
+        | MethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+    ): void;
+    exportStatus(
+      params: Params$Resource$Projects$Locations$Services$Revisions$Exportstatus,
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+    ): void;
+    exportStatus(
+      callback: BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+    ): void;
+    exportStatus(
+      paramsOrCallback?:
+        | Params$Resource$Projects$Locations$Services$Revisions$Exportstatus
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+        | BodyResponseCallback<Readable>,
+      optionsOrCallback?:
+        | MethodOptions
+        | StreamMethodOptions
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+        | BodyResponseCallback<Readable>,
+      callback?:
+        | BodyResponseCallback<Schema$GoogleCloudRunV2ExportStatusResponse>
+        | BodyResponseCallback<Readable>
+    ):
+      | void
+      | GaxiosPromise<Schema$GoogleCloudRunV2ExportStatusResponse>
+      | GaxiosPromise<Readable> {
+      let params = (paramsOrCallback ||
+        {}) as Params$Resource$Projects$Locations$Services$Revisions$Exportstatus;
+      let options = (optionsOrCallback || {}) as MethodOptions;
+
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+        params =
+          {} as Params$Resource$Projects$Locations$Services$Revisions$Exportstatus;
+        options = {};
+      }
+
+      if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        options = {};
+      }
+
+      const rootUrl = options.rootUrl || 'https://run.googleapis.com/';
+      const parameters = {
+        options: Object.assign(
+          {
+            url: (rootUrl + '/v2/{+name}/{+operationId}:exportStatus').replace(
+              /([^:]\/)\/+/g,
+              '$1'
+            ),
+            method: 'GET',
+          },
+          options
+        ),
+        params,
+        requiredParams: ['name', 'operationId'],
+        pathParams: ['name', 'operationId'],
+        context: this.context,
+      };
+      if (callback) {
+        createAPIRequest<Schema$GoogleCloudRunV2ExportStatusResponse>(
+          parameters,
+          callback as BodyResponseCallback<unknown>
+        );
+      } else {
+        return createAPIRequest<Schema$GoogleCloudRunV2ExportStatusResponse>(
+          parameters
+        );
+      }
+    }
+
+    /**
      * Gets information about a Revision.
      *
      * @param params - Parameters for request
@@ -5753,6 +6367,17 @@ export namespace run_v2 {
      * Indicates that the request should be validated without actually deleting any resources.
      */
     validateOnly?: boolean;
+  }
+  export interface Params$Resource$Projects$Locations$Services$Revisions$Exportstatus
+    extends StandardParameters {
+    /**
+     * Required. The name of the resource of which image export operation status has to be fetched. Format: `projects/{project_id_or_number\}/locations/{location\}/services/{service\}/revisions/{revision\}` for Revision `projects/{project_id_or_number\}/locations/{location\}/jobs/{job\}/executions/{execution\}` for Execution
+     */
+    name?: string;
+    /**
+     * Required. The operation id returned from ExportImage.
+     */
+    operationId?: string;
   }
   export interface Params$Resource$Projects$Locations$Services$Revisions$Get
     extends StandardParameters {

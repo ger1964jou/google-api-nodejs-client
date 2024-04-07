@@ -2031,7 +2031,7 @@ export namespace run_v1 {
     name?: string | null;
   }
   /**
-   * Represents a persistent volume that will be mounted using NFS. This volume will be shared between all instances of the Service and data will not be deleted when the instance is shut down.
+   * Represents a persistent volume that will be mounted using NFS. This volume will be shared between all instances of the resource and data will not be deleted when the instance is shut down.
    */
   export interface Schema$NFSVolumeSource {
     /**
