@@ -424,7 +424,7 @@ export namespace searchads360_v0 {
    */
   export interface Schema$GoogleAdsSearchads360V0Common__Metrics {
     /**
-     * The percent of your ad impressions that are shown as the very first ad above the organic search results.
+     * Search absolute top impression share is the percentage of your Search ad impressions that are shown in the most prominent Search position.
      */
     absoluteTopImpressionPercentage?: number | null;
     /**
@@ -700,7 +700,7 @@ export namespace searchads360_v0 {
      */
     searchAbsoluteTopImpressionShare?: number | null;
     /**
-     * The number estimating how often your ad wasn't the very first ad above the organic search results due to a low budget. Note: Search budget lost absolute top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
+     * The number estimating how often your ad wasn't the very first ad among the top ads in the search results due to a low budget. Note: Search budget lost absolute top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
      */
     searchBudgetLostAbsoluteTopImpressionShare?: number | null;
     /**
@@ -708,7 +708,7 @@ export namespace searchads360_v0 {
      */
     searchBudgetLostImpressionShare?: number | null;
     /**
-     * The number estimating how often your ad didn't show anywhere above the organic search results due to a low budget. Note: Search budget lost top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
+     * The number estimating how often your ad didn't show adjacent to the top organic search results due to a low budget. Note: Search budget lost top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
      */
     searchBudgetLostTopImpressionShare?: number | null;
     /**
@@ -724,7 +724,7 @@ export namespace searchads360_v0 {
      */
     searchImpressionShare?: number | null;
     /**
-     * The number estimating how often your ad wasn't the very first ad above the organic search results due to poor Ad Rank. Note: Search rank lost absolute top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
+     * The number estimating how often your ad wasn't the very first ad among the top ads in the search results due to poor Ad Rank. Note: Search rank lost absolute top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
      */
     searchRankLostAbsoluteTopImpressionShare?: number | null;
     /**
@@ -732,15 +732,15 @@ export namespace searchads360_v0 {
      */
     searchRankLostImpressionShare?: number | null;
     /**
-     * The number estimating how often your ad didn't show anywhere above the organic search results due to poor Ad Rank. Note: Search rank lost top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
+     * The number estimating how often your ad didn't show adjacent to the top organic search results due to poor Ad Rank. Note: Search rank lost top impression share is reported in the range of 0 to 0.9. Any value above 0.9 is reported as 0.9001.
      */
     searchRankLostTopImpressionShare?: number | null;
     /**
-     * The impressions you've received in the top location (anywhere above the organic search results) compared to the estimated number of impressions you were eligible to receive in the top location. Note: Search top impression share is reported in the range of 0.1 to 1. Any value below 0.1 is reported as 0.0999.
+     * The impressions you've received among the top ads compared to the estimated number of impressions you were eligible to receive among the top ads. Note: Search top impression share is reported in the range of 0.1 to 1. Any value below 0.1 is reported as 0.0999. Top ads are generally above the top organic results, although they may show below the top organic results on certain queries.
      */
     searchTopImpressionShare?: number | null;
     /**
-     * The percent of your ad impressions that are shown anywhere above the organic search results.
+     * The percent of your ad impressions that are shown adjacent to the top organic search results.
      */
     topImpressionPercentage?: number | null;
     /**
@@ -2131,7 +2131,7 @@ export namespace searchads360_v0 {
     resourceName?: string | null;
   }
   /**
-   * An ad group criterion.
+   * An ad group criterion. The ad_group_criterion report only returns criteria that were explicitly added to the ad group.
    */
   export interface Schema$GoogleAdsSearchads360V0Resources__AdGroupCriterion {
     /**
@@ -3498,7 +3498,7 @@ export namespace searchads360_v0 {
     resourceName?: string | null;
   }
   /**
-   * A gender view.
+   * A gender view. The gender_view resource reflects the effective serving state, rather than what criteria were added. An ad group without gender criteria by default shows to all genders, so all genders appear in gender_view with stats.
    */
   export interface Schema$GoogleAdsSearchads360V0Resources__GenderView {
     /**
@@ -3645,7 +3645,7 @@ export namespace searchads360_v0 {
     dimensions?: Schema$GoogleAdsSearchads360V0Resources__ListingGroupFilterDimension[];
   }
   /**
-   * A location view summarizes the performance of campaigns by Location criteria.
+   * A location view summarizes the performance of campaigns by a Location criterion.
    */
   export interface Schema$GoogleAdsSearchads360V0Resources__LocationView {
     /**
@@ -4814,7 +4814,7 @@ export namespace searchads360_v0 {
     }
 
     /**
-     * Returns all fields that match the search query. List of thrown errors: [AuthenticationError]() [AuthorizationError]() [HeaderError]() [InternalError]() [QueryError]() [QuotaError]() [RequestError]()
+     * Returns all fields that match the search [query](/search-ads/reporting/concepts/field-service#use_a_query_to_get_field_details). List of thrown errors: [AuthenticationError]() [AuthorizationError]() [HeaderError]() [InternalError]() [QueryError]() [QuotaError]() [RequestError]()
      *
      * @param params - Parameters for request
      * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
